@@ -82,6 +82,13 @@ public class LockScreen2Activity extends AppCompatActivity {
     }
 
     public void onFinishButtonClicked(View v){
+
+
+
+        //gps정보 + ratingBar 점수들 {맛=5,청결=3.5, 서비스=2}
+
+
+
         finish();
     }
 }

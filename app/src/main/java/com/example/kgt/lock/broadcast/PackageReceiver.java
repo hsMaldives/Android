@@ -4,6 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.example.kgt.lock.service.ScreenService;
+
 public class PackageReceiver extends BroadcastReceiver {
 
     @Override
