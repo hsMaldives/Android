@@ -175,7 +175,8 @@ public class LockScreen2Activity extends AppCompatActivity {
         startLocationService();
 
         for(int i=0;i<rating.length;i++) {
-            rating[i] = ((RatingBar)ratingAdapter.getItem(i)).getRating();
+            RatingBar ratingBar = (RatingBar)ratingAdapter.getItem(i);
+            rating[i] = ratingBar.getRating();
             Log.i("total", "v=" + v + "," + "h=" + h + "," + "infos=" + rating[i]);
         }
 
