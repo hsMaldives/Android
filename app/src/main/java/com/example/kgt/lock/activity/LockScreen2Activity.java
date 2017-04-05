@@ -26,11 +26,17 @@ import com.example.kgt.lock.R;
 import com.example.kgt.lock.service.ApiService;
 
 import retrofit2.Retrofit;
+import com.example.kgt.lock.adapter.RatingAdapter;
 
 public class LockScreen2Activity extends AppCompatActivity {
 
     Retrofit retrofit;
     ApiService apiService;
+
+    private double v; //위도
+    private double h; //경도
+    private float[] rating;//점수들
+    private RatingAdapter ratingAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +99,9 @@ public class LockScreen2Activity extends AppCompatActivity {
         }
 
         ListView listView = (ListView)findViewById(R.id.listView);
-        listView.setAdapter(new RatingAdapter(this,names));
+        ratingAdapter = new RatingAdapter(this,names);
+
+        listView.setAdapter(ratingAdapter);
     }
 
     public void checkDangerousPermissions() {
@@ -142,7 +150,7 @@ public class LockScreen2Activity extends AppCompatActivity {
 
         // 위치 정보를 받을 리스너 생성
         GPSListener gpsListener = new GPSListener();
-        long minTime = 10000;
+        long minTime = 1000000000;
         float minDistance = 0;
 
         try {
@@ -182,8 +190,10 @@ public class LockScreen2Activity extends AppCompatActivity {
          * 위치 정보가 확인될 때 자동 호출되는 메소드
          */
         public void onLocationChanged(Location location) {
-            Double latitude = location.getLatitude();
-            Double longitude = location.getLongitude();
+            //위도(가로선)
+            Double latitude = v= location.getLatitude();
+            //경도(세로선)
+            Double longitude =h = location.getLongitude();
 
             String msg = "Latitude : "+ latitude + "\nLongitude:"+ longitude;
             Log.i("GPSListener", msg);
@@ -211,11 +221,16 @@ public class LockScreen2Activity extends AppCompatActivity {
 
     public void onFinishButtonClicked(View v){
 
+        rating = new float[ratingAdapter.getCount()];
 
-
-        //gps정보 + ratingBar 점수들 {맛=5,청결=3.5, 서비스=2}
+        //gps정보 + ratingBar 점수들 {맛=5,청결=3.5, 서비스=2)
         startLocationService();
 
+        for(int i=0;i<rating.length;i++) {
+            RatingBar ratingBar = (RatingBar)ratingAdapter.getItem(i);
+            rating[i] = ratingBar.getRating();
+            Log.i("total", "v=" + v + "," + "h=" + h + "," + "infos=" + rating[i]);
+        }
 
 
         finish();
