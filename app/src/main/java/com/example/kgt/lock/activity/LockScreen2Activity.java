@@ -23,8 +23,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kgt.lock.R;
+import com.example.kgt.lock.service.ApiService;
+
+import retrofit2.Retrofit;
 
 public class LockScreen2Activity extends AppCompatActivity {
+
+    Retrofit retrofit;
+    ApiService apiService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +40,9 @@ public class LockScreen2Activity extends AppCompatActivity {
         setListViewAdapter();
 
         checkDangerousPermissions();
+
+        retrofit = new Retrofit.Builder().baseUrl(ApiService.API_URL).build();
+        apiService = retrofit.create(ApiService.class);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED|WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
     }
