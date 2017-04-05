@@ -86,6 +86,8 @@ public class ScreenService extends Service {
 
 
 
+
+
     }
 
     //ScreenReceiver가 등록되서 화면이 꺼질 때 시스템이 보내주는 ACTION_SCREEN_OFF 를 받아오게 되고 그럼 잠금화면이 짠 나타납니다. 아 !! 그럼 이 서비스는 어디서 실행시켜주느냐 ~ 설정화면 등을 만들어서 켜기버튼 누르면 실행하고 끄기버튼 누르면 취소하고 하면됩니다.ㅋ
