@@ -23,20 +23,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kgt.lock.R;
-import com.example.kgt.lock.service.ApiService;
 
-import retrofit2.Retrofit;
-import com.example.kgt.lock.adapter.RatingAdapter;
+import com.example.kgt.lock.adapter.RatingAdapters;
 
 public class LockScreen2Activity extends AppCompatActivity {
-
-    Retrofit retrofit;
-    ApiService apiService;
 
     private double v; //위도
     private double h; //경도
     private float[] rating;//점수들
-    private RatingAdapter ratingAdapter;
+    private RatingAdapters ratingAdapters;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +41,6 @@ public class LockScreen2Activity extends AppCompatActivity {
         setListViewAdapter();
 
         checkDangerousPermissions();
-
-        retrofit = new Retrofit.Builder().baseUrl(ApiService.API_URL).build();
-        apiService = retrofit.create(ApiService.class);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED|WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
     }
@@ -99,9 +91,9 @@ public class LockScreen2Activity extends AppCompatActivity {
         }
 
         ListView listView = (ListView)findViewById(R.id.listView);
-        ratingAdapter = new RatingAdapter(this,names);
+        ratingAdapters = new RatingAdapters(this, names);
 
-        listView.setAdapter(ratingAdapter);
+        listView.setAdapter(ratingAdapters);
     }
 
     public void checkDangerousPermissions() {
@@ -221,13 +213,13 @@ public class LockScreen2Activity extends AppCompatActivity {
 
     public void onFinishButtonClicked(View v){
 
-        rating = new float[ratingAdapter.getCount()];
+        rating = new float[ratingAdapters.getCount()];
 
         //gps정보 + ratingBar 점수들 {맛=5,청결=3.5, 서비스=2)
         startLocationService();
 
         for(int i=0;i<rating.length;i++) {
-            RatingBar ratingBar = (RatingBar)ratingAdapter.getItem(i);
+            RatingBar ratingBar = (RatingBar) ratingAdapters.getItem(i);
             rating[i] = ratingBar.getRating();
             Log.i("total", "v=" + v + "," + "h=" + h + "," + "infos=" + rating[i]);
         }
