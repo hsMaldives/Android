@@ -2,6 +2,7 @@ package com.example.kgt.lock.activity;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -10,28 +11,26 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.RatingBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kgt.lock.R;
-
-import com.example.kgt.lock.adapter.RatingAdapters;
+import com.example.kgt.lock.adapter.RatingAdapter;
 
 public class LockScreen2Activity extends AppCompatActivity {
 
-    private double v; //위도
-    private double h; //경도
+    private double lati; //위도
+    private double longi; //경도
     private float[] rating;//점수들
-    private RatingAdapters ratingAdapters;
+    private RatingAdapter ratingAdapter;
+
+    private String[] names = {"맛","친절","청결"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,62 +38,73 @@ public class LockScreen2Activity extends AppCompatActivity {
         setContentView(R.layout.lockscreen2);
 
         setListViewAdapter();
-
+        //checkOverlayPermissions();
         checkDangerousPermissions();
 
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED|WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+
+        chkGpsService();
+
+        //FLAG_SHOW_WHEN_LOCKED - 기본잠금보다 위에 띄워라
+        //FLAG_DISSMISS_KEYGUARD - 안드로이드 기본 잠금화면을 없애라. (말을 잘 안듣는다-나중에 수정)
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
+                        WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                //WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
+                //WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
+                ,
+                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
+                        WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                //WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON|
+                // WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        );
+    }
+
+
+    //GPS 설정 체크
+    private boolean chkGpsService() {
+
+        String gps = android.provider.Settings.Secure.getString(getContentResolver(), android.provider.Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+
+        Log.d(gps, "aaaa");
+
+        if (!(gps.matches(".*gps.*") && gps.matches(".*network.*"))) {
+
+            // GPS OFF 일때 Dialog 표시
+            AlertDialog.Builder gsDialog = new AlertDialog.Builder(this);
+            gsDialog.setTitle("위치 서비스 설정");
+            gsDialog.setMessage("무선 네트워크 사용, GPS 위성 사용을 모두 체크하셔야 정확한 위치 서비스가 가능합니다.\n위치 서비스 기능을 설정하시겠습니까?");
+            gsDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    // GPS설정 화면으로 이동
+                    Intent intent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    intent.addCategory(Intent.CATEGORY_DEFAULT);
+                    startActivity(intent);
+                }
+            })
+                    .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            return;
+                        }
+                    }).create().show();
+            return false;
+
+        } else {
+            return true;
+        }
     }
 
 
 
-    private String[] names = {"맛","친절","청결"};
+
+
 
     private void setListViewAdapter(){
-        class RatingAdapter extends BaseAdapter {
-
-            private Context context;
-            private String[] names;
-
-            public RatingAdapter(Context context,String[] names){
-                this.context = context;
-                this.names = names;
-            }
-
-            @Override
-            public int getCount() {
-                return names.length;
-            }
-
-            @Override
-            public Object getItem(int i) {
-                return names[i];
-            }
-
-            @Override
-            public long getItemId(int i) {
-                return i;
-            }
-
-            @Override
-            public View getView(int i, View view, ViewGroup viewGroup) {
-                if(view == null){
-                    LayoutInflater inflater = LayoutInflater.from(context);
-                    view = inflater.inflate(R.layout.item_list,viewGroup,false);
-                }
-                TextView textView = (TextView)view.findViewById(R.id.ratingTextView);
-                RatingBar ratingBar = (RatingBar)view.findViewById(R.id.ratingBar);
-
-                textView.setText((String)getItem(i));
-
-                return view;
-            }
-        }
-
         ListView listView = (ListView)findViewById(R.id.listView);
-        ratingAdapters = new RatingAdapters(this, names);
+        ratingAdapter = new RatingAdapter(this, names);
+        listView.setAdapter(ratingAdapter);
 
-        listView.setAdapter(ratingAdapters);
+        rating = new float[ratingAdapter.getCount()];
     }
+
 
     public void checkDangerousPermissions() {
         String[] permissions = {
@@ -121,6 +131,8 @@ public class LockScreen2Activity extends AppCompatActivity {
                 ActivityCompat.requestPermissions(this, permissions, 1);
             }
         }
+
+
     }
 
     @Override
@@ -183,9 +195,9 @@ public class LockScreen2Activity extends AppCompatActivity {
          */
         public void onLocationChanged(Location location) {
             //위도(가로선)
-            Double latitude = v= location.getLatitude();
+            Double latitude = lati= location.getLatitude();
             //경도(세로선)
-            Double longitude =h = location.getLongitude();
+            Double longitude =longi = location.getLongitude();
 
             String msg = "Latitude : "+ latitude + "\nLongitude:"+ longitude;
             Log.i("GPSListener", msg);
@@ -204,24 +216,24 @@ public class LockScreen2Activity extends AppCompatActivity {
 
     }
 
+
+
+
     public void onBeforeButtonClicked(View v){
         Intent intent = new Intent(this, LockScreenActivity.class);
         startActivity(intent);
+
         overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
         finish();
     }
 
     public void onFinishButtonClicked(View v){
-
-        rating = new float[ratingAdapters.getCount()];
-
-        //gps정보 + ratingBar 점수들 {맛=5,청결=3.5, 서비스=2)
         startLocationService();
 
         for(int i=0;i<rating.length;i++) {
-            RatingBar ratingBar = (RatingBar) ratingAdapters.getItem(i);
+            RatingBar ratingBar = (RatingBar) ratingAdapter.getItem(i);
             rating[i] = ratingBar.getRating();
-            Log.i("total", "v=" + v + "," + "h=" + h + "," + "infos=" + rating[i]);
+            Log.i("infos", "위도(lati)=" + lati + "," + "경도(longi)=" + longi + "," + "infos=" + rating[i]);
         }
 
 

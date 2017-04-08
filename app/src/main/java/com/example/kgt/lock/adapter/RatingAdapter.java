@@ -17,13 +17,13 @@ import java.util.List;
  * Created by KGT on 2017-04-05.
  */
 
-public class RatingAdapters extends BaseAdapter{
+public class RatingAdapter extends BaseAdapter{
 
         private Context context;
         private String[] names;
         private List<RatingBar> ratingBarList;
 
-        public RatingAdapters(Context context, String[] names){
+        public RatingAdapter(Context context, String[] names){
             this.context = context;
             this.names = names;
             ratingBarList = new ArrayList<>();

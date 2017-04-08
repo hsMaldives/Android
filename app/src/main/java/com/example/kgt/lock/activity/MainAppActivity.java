@@ -21,12 +21,17 @@ public class MainAppActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        webViewConfig();
+    }
+
+    private void webViewConfig(){
         WebView webView = (WebView) findViewById(R.id.webView);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl("http://m.naver.com");
         webView.setWebViewClient(new WebViewClient());
         webView.setWebChromeClient(new WebChromeClient());
     }
+
 
     public void onStartButtonClicked(View v){
         Intent intent = new Intent(this, ScreenService.class);

@@ -29,7 +29,16 @@ public class LockScreenActivity extends AppCompatActivity {
 
         //FLAG_SHOW_WHEN_LOCKED - 기본잠금보다 위에 띄워라
         //FLAG_DISSMISS_KEYGUARD - 안드로이드 기본 잠금화면을 없애라. (말을 잘 안듣는다-나중에 수정)
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED|WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD|WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
+                        WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                        //WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
+                        //WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
+                ,
+                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
+                        WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                        //WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON|
+                       // WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        );
     }
 
     //나머지는 알아서 구성하기...
@@ -38,6 +47,16 @@ public class LockScreenActivity extends AppCompatActivity {
 
 
 
+    private void goToLockScreen2(){
+        Intent i = new Intent(this,LockScreen2Activity.class);
+        //intent.addFlags(FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(i);
+
+        //왼쪽에서 들어오고 오른쪽으로 나간다.(-> 슬라이드)
+        overridePendingTransition(R.anim.in_from_left,R.anim.out_to_right);
+
+        finish();
+    }
 
 
     private void customSeekBar(){
@@ -52,10 +71,7 @@ public class LockScreenActivity extends AppCompatActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 if(seekBar.getProgress() >= 80){
-                    Intent i = new Intent(seekBar.getContext(),LockScreen2Activity.class);
-
-                    startActivity(i);
-                    finish();
+                    goToLockScreen2();
                 }
                 else {
                     seekBar.setProgress(0);
@@ -104,13 +120,7 @@ public class LockScreenActivity extends AppCompatActivity {
 
 
     public void onNextButtonClicked(View v){
-        Intent intent = new Intent(this, LockScreen2Activity.class);
-        //intent.addFlags(FLAG_ACTIVITY_REORDER_TO_FRONT);
-        startActivity(intent);
-        overridePendingTransition(R.anim.in_from_left,R.anim.out_to_right);
-        //왼쪽에서 들어오고 오른쪽으로 나간다.(-> 슬라이드)
-        finish();
-
+       goToLockScreen2();
     }
 
 }
