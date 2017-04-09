@@ -5,6 +5,8 @@
     android:id="@+id/popupLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_centerInParent="false"
+    android:duplicateParentState="false"
     android:theme="@android:style/Theme.Translucent"
     tools:context=".activity.PopUpActivity">
 
