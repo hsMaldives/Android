@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -23,13 +24,26 @@ import android.widget.Toast;
 import com.example.kgt.lock.R;
 import com.example.kgt.lock.adapter.RatingAdapter;
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.Iterator;
+
+import javax.net.ssl.HttpsURLConnection;
+
 public class LockScreen2Activity extends AppCompatActivity {
 
     private double lati; //위도
     private double longi; //경도
     private float[] rating;//점수들
     private RatingAdapter ratingAdapter;
-
     private String[] names = {"맛","친절","청결"};
 
     @Override
@@ -56,6 +70,7 @@ public class LockScreen2Activity extends AppCompatActivity {
                 //WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON|
                 // WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         );
+
     }
 
 
@@ -93,10 +108,6 @@ public class LockScreen2Activity extends AppCompatActivity {
     }
 
 
-
-
-
-
     private void setListViewAdapter(){
         ListView listView = (ListView)findViewById(R.id.listView);
         ratingAdapter = new RatingAdapter(this, names);
@@ -104,7 +115,6 @@ public class LockScreen2Activity extends AppCompatActivity {
 
         rating = new float[ratingAdapter.getCount()];
     }
-
 
     public void checkDangerousPermissions() {
         String[] permissions = {
@@ -131,8 +141,6 @@ public class LockScreen2Activity extends AppCompatActivity {
                 ActivityCompat.requestPermissions(this, permissions, 1);
             }
         }
-
-
     }
 
     @Override
@@ -195,11 +203,11 @@ public class LockScreen2Activity extends AppCompatActivity {
          */
         public void onLocationChanged(Location location) {
             //위도(가로선)
-            Double latitude = lati= location.getLatitude();
+            lati= location.getLatitude();
             //경도(세로선)
-            Double longitude =longi = location.getLongitude();
+            longi = location.getLongitude();
 
-            String msg = "Latitude : "+ latitude + "\nLongitude:"+ longitude;
+            String msg = "Latitude : "+ lati + "\nLongitude:"+ longi;
             Log.i("GPSListener", msg);
 
             Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
@@ -216,7 +224,90 @@ public class LockScreen2Activity extends AppCompatActivity {
 
     }
 
+    public class SendPost extends AsyncTask<String, Void, String> {
+        protected void onPreExecute() {
+        }
 
+        protected String doInBackground(String... args) {
+            try {
+                URL url = new URL("https://studytutorial.in/post.php");
+
+                //json 객체화
+                JSONObject info = new JSONObject();
+                info.put("name", longi);
+                info.put("email", lati);
+//                for (int i = 0; i < rating.length; i++) {
+//                    info.put(Integer.toString(i), ratingAdapter.getItem(i).toString());
+//                }
+                Log.e("data", info.toString());
+
+                //Http 연결 설정
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(15000);
+                conn.setConnectTimeout(15000);
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
+
+
+                OutputStream os = conn.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+                writer.write(getInfo(info));
+
+                writer.flush();
+                writer.close();
+                os.close();
+
+                int responseCode = conn.getResponseCode();
+
+                if (responseCode == HttpsURLConnection.HTTP_OK) {
+                    BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+                    StringBuffer sb = new StringBuffer("");
+                    String line = "";
+
+                    while ((line = in.readLine()) != null) {
+                        sb.append(line);
+                        break;
+                    }
+                    in.close();
+                    return sb.toString();
+                } else {
+                    return new String("false : " + responseCode);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return new String("Exception: " + e.getMessage());
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+        Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public String getInfo(JSONObject info) throws Exception {
+        StringBuilder result = new StringBuilder();
+        boolean first = true;
+
+        Iterator<String> itr = info.keys();
+
+        while(itr.hasNext()) {
+            String key = itr.next();
+            Object value = info.get(key);
+
+            if(first)
+                first = false;
+            else
+                result.append("&");
+
+            result.append(URLEncoder.encode(key, "UTF-8"));
+            result.append("=");
+            result.append(URLEncoder.encode(value.toString(), "UTF-8"));
+        }
+        return result.toString();
+    }
 
 
     public void onBeforeButtonClicked(View v){
@@ -236,7 +327,10 @@ public class LockScreen2Activity extends AppCompatActivity {
             Log.i("infos", "위도(lati)=" + lati + "," + "경도(longi)=" + longi + "," + "infos=" + rating[i]);
         }
 
+        new SendPost().execute();
 
         finish();
     }
+
+
 }
