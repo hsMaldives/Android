@@ -15,9 +15,11 @@ import android.widget.SeekBar;
 
 import com.example.kgt.lock.R;
 
+import static android.view.WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED;
+
 public class LockScreenActivity extends AppCompatActivity {
 
-
+    HomeKeyLocker homeKeyLoader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,15 +32,18 @@ public class LockScreenActivity extends AppCompatActivity {
         //FLAG_SHOW_WHEN_LOCKED - 기본잠금보다 위에 띄워라
         //FLAG_DISSMISS_KEYGUARD - 안드로이드 기본 잠금화면을 없애라. (말을 잘 안듣는다-나중에 수정)
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
-                        WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                        //WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
-                        //WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
+                        FLAG_SHOW_WHEN_LOCKED
+                //WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
+                //WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
                 ,
                 WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
-                        WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                        //WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON|
-                       // WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                        FLAG_SHOW_WHEN_LOCKED
+                //WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON|
+                // WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         );
+
+        homeKeyLoader = new HomeKeyLocker();
+//        homeKeyLoader.lock(this);
     }
 
     //나머지는 알아서 구성하기...
@@ -46,34 +51,35 @@ public class LockScreenActivity extends AppCompatActivity {
     //....
 
 
-
-    private void goToLockScreen2(){
-        Intent i = new Intent(this,LockScreen2Activity.class);
+    private void goToLockScreen2() {
+        Intent i = new Intent(this, LockScreen2Activity.class);
         //intent.addFlags(FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(i);
 
         //왼쪽에서 들어오고 오른쪽으로 나간다.(-> 슬라이드)
-        overridePendingTransition(R.anim.in_from_left,R.anim.out_to_right);
+        overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
 
         finish();
     }
 
 
-    private void customSeekBar(){
-        final SeekBar seekBar = (SeekBar)findViewById(R.id.seekBar);
+    private void customSeekBar() {
+        final SeekBar seekBar = (SeekBar) findViewById(R.id.seekBar);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {}
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+            }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                if(seekBar.getProgress() >= 80){
+                if (seekBar.getProgress() >= 80) {
+//                    homeKeyLoader.unlock();
                     goToLockScreen2();
-                }
-                else {
+                } else {
                     seekBar.setProgress(0);
                 }
             }
@@ -82,7 +88,7 @@ public class LockScreenActivity extends AppCompatActivity {
         seekBar.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if(motionEvent.getAction() == MotionEvent.ACTION_UP){
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     seekBar.setProgress(0);
                 }
                 return false;
@@ -112,15 +118,15 @@ public class LockScreenActivity extends AppCompatActivity {
 
     }
 
-    public void onSkipButtonClicked(View v){
+    public void onSkipButtonClicked(View v) {
         //위치정보 전송??
         //....ㅁㄴㅇㄹ
         finish();
     }
 
 
-    public void onNextButtonClicked(View v){
-       goToLockScreen2();
+    public void onNextButtonClicked(View v) {
+        goToLockScreen2();
     }
 
 }
