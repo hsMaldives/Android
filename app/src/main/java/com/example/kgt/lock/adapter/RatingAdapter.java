@@ -53,6 +53,7 @@ public class RatingAdapter extends BaseAdapter{
 
                 TextView textView = (TextView)view.findViewById(R.id.ratingTextView);
                 textView.setText(names[i]);
+
                 RatingBar ratingBar = (RatingBar)view.findViewById(R.id.ratingBar);
                 ratingBarList.add(ratingBar);
             }

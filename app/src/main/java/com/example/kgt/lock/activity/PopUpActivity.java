@@ -14,43 +14,40 @@ import com.example.kgt.lock.R;
 public class PopUpActivity extends AppCompatActivity {
 
     int point = 10000;
+    RelativeLayout relativeLayout;
+    Animation fadeIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pop_up);
 
-        final RelativeLayout relativeLayout = (RelativeLayout)findViewById(R.id.popupLayout);
-
-
-        final Animation fadeIn, fadeOut;
+        relativeLayout = (RelativeLayout)findViewById(R.id.popupLayout);
         fadeIn = AnimationUtils.loadAnimation(this,R.anim.fade_in);
-        fadeOut = AnimationUtils.loadAnimation(this,R.anim.fade_out);
 
-
-
-
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+        relativeLayout.setAnimation(fadeIn);
 
         TextView textView = (TextView)findViewById(R.id.pointTextView);
         textView.setText(+point+ "points");
 
-
-        relativeLayout.setAnimation(fadeIn);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
 
         //총시간, 인터벌(간격)
-        new CountDownTimer(5*1000,1000){
+        new CountDownTimer(4*1000,1000){
             @Override
             public void onTick(long l) {}
 
             @Override
             public void onFinish() {
-                relativeLayout.setAnimation(fadeOut);
-
                 finish();
             }
         }.start();
+    }
 
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0,R.anim.fade_out);
     }
 }

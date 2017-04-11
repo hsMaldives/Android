@@ -72,7 +72,8 @@
         <activity android:name=".activity.LockScreen2Activity" />
         <activity
             android:name=".activity.PopUpActivity"
-            android:theme="@style/Theme.AppCompat.Translucent">
+            android:theme="@style/Theme.AppCompat.Translucent"
+            >
 
 
         </activity>

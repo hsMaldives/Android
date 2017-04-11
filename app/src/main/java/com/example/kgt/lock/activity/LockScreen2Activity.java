@@ -184,8 +184,8 @@ public class LockScreen2Activity extends AppCompatActivity {
             // 위치 확인이 안되는 경우에도 최근에 확인된 위치 정보 먼저 확인
             Location lastLocation = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (lastLocation != null) {
-                Double latitude = lastLocation.getLatitude();
-                Double longitude = lastLocation.getLongitude();
+                Double latitude = lati = lastLocation.getLatitude();
+                Double longitude = longi = lastLocation.getLongitude();
 
                 Toast.makeText(getApplicationContext(), "Last Known Location : " + "Latitude : " + latitude + "\nLongitude:" + longitude, Toast.LENGTH_LONG).show();
             }
@@ -231,15 +231,16 @@ public class LockScreen2Activity extends AppCompatActivity {
 
         protected String doInBackground(String... args) {
             try {
-                URL url = new URL("https://studytutorial.in/post.php");
+                URL url = new URL("http://192.168.0.56:8080/moldives");
 
                 //json 객체화
                 JSONObject info = new JSONObject();
-                info.put("name", longi);
-                info.put("email", lati);
-//                for (int i = 0; i < rating.length; i++) {
-//                    info.put(Integer.toString(i), ratingAdapter.getItem(i).toString());
-//                }
+                info.put("lati", lati); //위도
+                info.put("longi", longi); //경도
+                for (int i = 0; i < rating.length; i++) {
+                    info.put(Integer.toString(i), rating[i]); //별점들
+                }
+
                 Log.e("data", info.toString());
 
                 //Http 연결 설정
@@ -284,7 +285,7 @@ public class LockScreen2Activity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-        Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
         }
     }
 
