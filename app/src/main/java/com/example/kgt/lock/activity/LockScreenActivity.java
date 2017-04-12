@@ -14,12 +14,15 @@ import android.view.WindowManager;
 import android.widget.SeekBar;
 
 import com.example.kgt.lock.R;
+import com.example.kgt.lock.service.LocationService;
 
 import static android.view.WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED;
 
 public class LockScreenActivity extends AppCompatActivity {
 
-    HomeKeyLocker homeKeyLoader;
+    private HomeKeyLocker homeKeyLoader;
+
+    private LocationService locationService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +54,8 @@ public class LockScreenActivity extends AppCompatActivity {
     //....
 
 
-    private void goToLockScreen2() {
-        Intent i = new Intent(this, LockScreen2Activity.class);
+    private void goToMapView() {
+        Intent i = new Intent(this, MapViewActivity.class);
         //intent.addFlags(FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(i);
 
@@ -78,7 +81,7 @@ public class LockScreenActivity extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 if (seekBar.getProgress() >= 80) {
 //                    homeKeyLoader.unlock();
-                    goToLockScreen2();
+                    goToMapView();
                 } else {
                     seekBar.setProgress(0);
                 }
@@ -126,7 +129,7 @@ public class LockScreenActivity extends AppCompatActivity {
 
 
     public void onNextButtonClicked(View v) {
-        goToLockScreen2();
+        goToMapView();
     }
 
 }
