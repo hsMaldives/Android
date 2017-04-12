@@ -1,4 +1,4 @@
-package com.example.kgt.lock.service;
+package com.example.kgt.lock.classs;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,6 +11,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.example.kgt.lock.model.LocationAndRating;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -19,42 +20,31 @@ import com.google.android.gms.maps.model.LatLng;
  * Created by jeeyoung on 2017-04-12.
  */
 
-public class LocationService extends AppCompatActivity implements LocationListener {
+public class GPSListener extends AppCompatActivity implements LocationListener {
 
-    private double lati; //위도
-    private double longi; //경도
+//    private double lati; //위도
+//    private double longi; //경도
 
+    private LocationAndRating locationAndRating = new LocationAndRating();
+
+    public LocationAndRating getLocationAndRating(){
+        return locationAndRating;
+    }
     public GoogleMap map;
-
-    public void setLati(double lati) {
-        this.lati = lati;
-    }
-
-    public void setLongi(double longi) {
-        this.longi = longi;
-    }
-
-    public double getLati() {
-        return lati;
-    }
-
-    public double getLongi() {
-        return longi;
-    }
 
     /**
      * 위치 정보가 확인될 때 자동 호출되는 메소드
      */
     public void onLocationChanged(Location location) {
         //위도(가로선)
-        lati = location.getLatitude();
+        locationAndRating.setLati(location.getLatitude());
         //경도(세로선)
-        longi = location.getLongitude();
+        locationAndRating.setLongi(location.getLongitude());
 
-        String msg = "Latitude : " + lati + "\nLongitude:" + longi;
+        String msg = "Latitude : " + locationAndRating.getLati() + "\nLongitude:" + locationAndRating.getLongi();
         Log.i("LocationListener", msg);
 
-        showCurrentLocation(lati, longi, map);
+        showCurrentLocation(locationAndRating.getLati(), locationAndRating.getLongi(), map);
 
         //Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
@@ -73,7 +63,7 @@ public class LocationService extends AppCompatActivity implements LocationListen
         LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         // 위치 정보를 받을 리스너 생성
-        LocationService locationService = new LocationService();
+        GPSListener gpsListener = new GPSListener();
         long minTime = 1000000000;
         float minDistance = 0;
 
@@ -83,20 +73,20 @@ public class LocationService extends AppCompatActivity implements LocationListen
                     LocationManager.GPS_PROVIDER,
                     minTime,
                     minDistance,
-                    locationService);
+                    gpsListener);
 
             // 네트워크를 이용한 위치 요청
             manager.requestLocationUpdates(
                     LocationManager.NETWORK_PROVIDER,
                     minTime,
                     minDistance,
-                    locationService);
+                    gpsListener);
 
             // 위치 확인이 안되는 경우에도 최근에 확인된 위치 정보 먼저 확인
             Location lastLocation = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (lastLocation != null) {
-                Double latitude = lati = lastLocation.getLatitude();
-                Double longitude = longi = lastLocation.getLongitude();
+                locationAndRating.setLati(lastLocation.getLatitude());
+                locationAndRating.setLongi(lastLocation.getLongitude());
 
 //                Toast.makeText(getApplicationContext(), "Last Known Location : " + "Latitude : " + latitude + "\nLongitude:" + longitude, Toast.LENGTH_LONG).show();
             }

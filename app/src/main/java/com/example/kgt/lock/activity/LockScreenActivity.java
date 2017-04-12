@@ -57,6 +57,7 @@ public class LockScreenActivity extends AppCompatActivity {
     private void goToMapView() {
         Intent i = new Intent(this, MapViewActivity.class);
         //intent.addFlags(FLAG_ACTIVITY_REORDER_TO_FRONT);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(i);
 
         //왼쪽에서 들어오고 오른쪽으로 나간다.(-> 슬라이드)
