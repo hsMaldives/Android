@@ -21,10 +21,11 @@ import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
+import com.example.kgt.lock.model.LocationAndRating;
 import com.example.kgt.lock.R;
 import com.example.kgt.lock.adapter.RatingAdapter;
-
-import org.json.JSONObject;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -33,16 +34,12 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.util.Iterator;
 
 import javax.net.ssl.HttpsURLConnection;
 
 public class LockScreen2Activity extends AppCompatActivity {
 
-    private double lati; //위도
-    private double longi; //경도
-    private float[] rating;//점수들
+    private LocationAndRating locationAndRating = new LocationAndRating();
     private RatingAdapter ratingAdapter;
 
     private String[] names = {"맛","친절","청결"};
@@ -114,7 +111,7 @@ public class LockScreen2Activity extends AppCompatActivity {
         ratingAdapter = new RatingAdapter(this, names);
         listView.setAdapter(ratingAdapter);
 
-        rating = new float[ratingAdapter.getCount()];
+        locationAndRating.setRating(new float[ratingAdapter.getCount()]);
     }
 
     public void checkDangerousPermissions() {
@@ -184,10 +181,10 @@ public class LockScreen2Activity extends AppCompatActivity {
             // 위치 확인이 안되는 경우에도 최근에 확인된 위치 정보 먼저 확인
             Location lastLocation = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (lastLocation != null) {
-                Double latitude = lati = lastLocation.getLatitude();
-                Double longitude = longi = lastLocation.getLongitude();
+                locationAndRating.setLati(lastLocation.getLatitude());
+                locationAndRating.setLongi(lastLocation.getLongitude());
 
-                Toast.makeText(getApplicationContext(), "Last Known Location : " + "Latitude : " + latitude + "\nLongitude:" + longitude, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Last Known Location : " + "Latitude : " + locationAndRating.getLati() + "\nLongitude:" + locationAndRating.getLongi(), Toast.LENGTH_LONG).show();
             }
         } catch(SecurityException ex) {
             ex.printStackTrace();
@@ -204,11 +201,11 @@ public class LockScreen2Activity extends AppCompatActivity {
          */
         public void onLocationChanged(Location location) {
             //위도(가로선)
-            lati= location.getLatitude();
+            locationAndRating.setLati(location.getLatitude());
             //경도(세로선)
-            longi = location.getLongitude();
+            locationAndRating.setLongi(location.getLongitude());
 
-            String msg = "Latitude : "+ lati + "\nLongitude:"+ longi;
+            String msg = "Latitude : "+ locationAndRating.getLati() + "\nLongitude:"+ locationAndRating.getLongi();
             Log.i("GPSListener", msg);
 
             Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
@@ -231,17 +228,11 @@ public class LockScreen2Activity extends AppCompatActivity {
 
         protected String doInBackground(String... args) {
             try {
-                URL url = new URL("http://192.168.0.56:8080/moldives");
+                URL url = new URL("http://192.168.0.53:8080/WhereYou/rating/test");
 
                 //json 객체화
-                JSONObject info = new JSONObject();
-                info.put("lati", lati); //위도
-                info.put("longi", longi); //경도
-                for (int i = 0; i < rating.length; i++) {
-                    info.put(Integer.toString(i), rating[i]); //별점들
-                }
-
-                Log.e("data", info.toString());
+                Gson gson = new GsonBuilder().create();
+                String loationAndRatingJson = gson.toJson(locationAndRating);
 
                 //Http 연결 설정
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -250,11 +241,12 @@ public class LockScreen2Activity extends AppCompatActivity {
                 conn.setRequestMethod("POST");
                 conn.setDoInput(true);
                 conn.setDoOutput(true);
+                conn.setRequestProperty("Content-Type","application/json");
 
 
                 OutputStream os = conn.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-                writer.write(getInfo(info));
+                writer.write(loationAndRatingJson);
 
                 writer.flush();
                 writer.close();
@@ -289,28 +281,6 @@ public class LockScreen2Activity extends AppCompatActivity {
         }
     }
 
-    public String getInfo(JSONObject info) throws Exception {
-        StringBuilder result = new StringBuilder();
-        boolean first = true;
-
-        Iterator<String> itr = info.keys();
-
-        while(itr.hasNext()) {
-            String key = itr.next();
-            Object value = info.get(key);
-
-            if(first)
-                first = false;
-            else
-                result.append("&");
-
-            result.append(URLEncoder.encode(key, "UTF-8"));
-            result.append("=");
-            result.append(URLEncoder.encode(value.toString(), "UTF-8"));
-        }
-        return result.toString();
-    }
-
 
     public void onBeforeButtonClicked(View v){
         Intent intent = new Intent(this, LockScreenActivity.class);
@@ -323,10 +293,10 @@ public class LockScreen2Activity extends AppCompatActivity {
     public void onFinishButtonClicked(View v){
         startLocationService();
 
-        for(int i=0;i<rating.length;i++) {
+        for(int i=0;i<locationAndRating.getRating().length;i++) {
             RatingBar ratingBar = (RatingBar) ratingAdapter.getItem(i);
-            rating[i] = ratingBar.getRating();
-            Log.i("infos", "위도(lati)=" + lati + "," + "경도(longi)=" + longi + "," + "infos=" + rating[i]);
+            locationAndRating.getRating()[i] = ratingBar.getRating();
+            Log.i("infos", "위도(lati)=" + locationAndRating.getLati() + "," + "경도(longi)=" + locationAndRating.getLongi() + "," + "infos=" + locationAndRating.getRating()[i]);
         }
 
         new SendPost().execute();

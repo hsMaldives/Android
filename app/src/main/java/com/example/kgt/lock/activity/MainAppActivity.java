@@ -38,7 +38,7 @@ public class MainAppActivity extends AppCompatActivity {
         startService(intent);
         Toast.makeText(this,"startService",Toast.LENGTH_SHORT).show();
 
-        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences("bootConfig.pref",Context.MODE_PRIVATE);;
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean("isBoot",true);
         editor.commit();
@@ -50,7 +50,7 @@ public class MainAppActivity extends AppCompatActivity {
         stopService(intent);
         Toast.makeText(this,"stopService",Toast.LENGTH_SHORT).show();
 
-        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences("bootConfig.pref",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean("isBoot",false);
         editor.commit();
