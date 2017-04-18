@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -14,15 +15,12 @@ import android.view.WindowManager;
 import android.widget.SeekBar;
 
 import com.example.kgt.lock.R;
-import com.example.kgt.lock.service.LocationService;
 
 import static android.view.WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED;
 
 public class LockScreenActivity extends AppCompatActivity {
 
-    private HomeKeyLocker homeKeyLoader;
-
-    private LocationService locationService;
+//    private HomeKeyLocker homeKeyLoader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,18 +43,14 @@ public class LockScreenActivity extends AppCompatActivity {
                 // WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         );
 
-        homeKeyLoader = new HomeKeyLocker();
+//        homeKeyLoader = new HomeKeyLocker();
 //        homeKeyLoader.lock(this);
     }
 
-    //나머지는 알아서 구성하기...
-    //....
-    //....
-
-
     private void goToMapView() {
-        Intent i = new Intent(this, MapViewActivity.class);
+        Intent i = new Intent(this, MapsActivity.class);
         //intent.addFlags(FLAG_ACTIVITY_REORDER_TO_FRONT);
+        //i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(i);
 
@@ -82,6 +76,7 @@ public class LockScreenActivity extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 if (seekBar.getProgress() >= 80) {
 //                    homeKeyLoader.unlock();
+                    Log.d("seekbar", "80이상");
                     goToMapView();
                 } else {
                     seekBar.setProgress(0);
@@ -118,8 +113,6 @@ public class LockScreenActivity extends AppCompatActivity {
                 return true;
             }
         });
-
-
     }
 
     public void onSkipButtonClicked(View v) {
