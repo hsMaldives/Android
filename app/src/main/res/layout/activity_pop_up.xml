@@ -10,7 +10,7 @@
     android:duplicateParentState="false"
     android:gravity="center"
     android:theme="@android:style/Theme.Translucent"
-    tools:context=".activity.PopUpActivity">
+    tools:context="kr.ac.hansung.maldives.android.activity.PopUpActivity">
 
     <ImageView
         android:id="@+id/imageView"
@@ -19,7 +19,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="0dp"
-        app:srcCompat="@drawable/circle" />
+        android:src="@drawable/ic_money" />
 
     <TextView
         android:id="@+id/pointTextView"

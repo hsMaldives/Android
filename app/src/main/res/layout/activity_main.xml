@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.kgt.lock.activity.LockScreenActivity">
+    tools:context="kr.ac.hansung.maldives.android.activity.LockScreenActivity">
 
     <Button
         android:id="@+id/btn1"
