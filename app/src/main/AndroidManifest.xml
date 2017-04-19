@@ -38,7 +38,7 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name="kr.ac.hansung.maldives.android.activity.MainAppActivity">
+        <activity android:name=".activity.MainAppActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -47,19 +47,19 @@
         </activity>
 
         <receiver
-            android:name="kr.ac.hansung.maldives.android.broadcast.ScreenReceiver"
+            android:name=".broadcast.ScreenReceiver"
             android:enabled="false"
             android:exported="true" />
 
         <service
-            android:name="kr.ac.hansung.maldives.android.service.ScreenService"
+            android:name=".service.ScreenService"
             android:enabled="true"
             android:exported="false" />
 
-        <activity android:name="kr.ac.hansung.maldives.android.activity.LockScreenActivity" />
+        <activity android:name=".activity.LockScreenActivity" />
 
         <receiver
-            android:name="kr.ac.hansung.maldives.android.broadcast.RestartReceiver"
+            android:name=".broadcast.RestartReceiver"
             android:enabled="true"
             android:exported="false"
             android:process=".remote">
@@ -68,7 +68,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name="kr.ac.hansung.maldives.android.broadcast.BootReceiver"
+            android:name=".broadcast.BootReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
@@ -76,7 +76,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name="kr.ac.hansung.maldives.android.broadcast.PackageReceiver"
+            android:name=".broadcast.PackageReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
@@ -88,9 +88,9 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name="kr.ac.hansung.maldives.android.activity.LockScreen2Activity" />
+        <activity android:name=".activity.LockScreen2Activity" />
         <activity
-            android:name="kr.ac.hansung.maldives.android.activity.PopUpActivity"
+            android:name=".activity.PopUpActivity"
             android:theme="@style/Theme.AppCompat.Translucent" />
 
         <meta-data
@@ -98,8 +98,9 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name="kr.ac.hansung.maldives.android.activity.MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:name=".activity.MapsActivity"
+            android:label="@string/title_activity_maps" />
+        <activity android:name=".activity.SettingActivity"></activity>
     </application>
 
 </manifest>

@@ -13,12 +13,16 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import java.util.logging.Logger;
+
 import kr.ac.hansung.maldives.android.service.ScreenService;
+import kr.ac.hansung.maldives.android.webinterface.WebViewInterface;
 
 public class MainAppActivity extends AppCompatActivity {
 
@@ -41,7 +45,8 @@ public class MainAppActivity extends AppCompatActivity {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl("http://223.194.145.81:80/WhereYou");
         webView.setWebViewClient(new WebViewClient());
-        webView.setWebChromeClient(new WebChromeClient());
+        webView.setWebChromeClient(new WebChromeClient(){});
+        webView.addJavascriptInterface(new WebViewInterface(this, webView), "whereYou");
     }
 
     //위치 사용 권한 설정
@@ -116,29 +121,5 @@ public class MainAppActivity extends AppCompatActivity {
         } else {
             return true;
         }
-    }
-
-    public void onStartButtonClicked(View v) {
-        Intent intent = new Intent(this, ScreenService.class);
-        startService(intent);
-        Toast.makeText(this, "startService", Toast.LENGTH_SHORT).show();
-
-        SharedPreferences sharedPref = getSharedPreferences("bootConfig.pref", Context.MODE_PRIVATE);
-        ;
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putBoolean("isBoot", true);
-        editor.commit();
-    }
-
-
-    public void onStopButtonClicked(View v) {
-        Intent intent = new Intent(this, ScreenService.class);
-        stopService(intent);
-        Toast.makeText(this, "stopService", Toast.LENGTH_SHORT).show();
-
-        SharedPreferences sharedPref = getSharedPreferences("bootConfig.pref", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putBoolean("isBoot", false);
-        editor.commit();
     }
 }
