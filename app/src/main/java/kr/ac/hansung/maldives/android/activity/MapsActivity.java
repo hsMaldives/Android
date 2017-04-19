@@ -45,10 +45,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private LocationAndRating locationAndRating = new LocationAndRating();
 
-    public LocationAndRating getLocationAndRating() {
-        return locationAndRating;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -220,6 +216,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void goToLockScreen2() {
         Intent i = new Intent(this, LockScreen2Activity.class);
         //intent.addFlags(FLAG_ACTIVITY_REORDER_TO_FRONT);
+        i.putExtra("lati",locationAndRating.getLati());
+        i.putExtra("longi",locationAndRating.getLongi());
         startActivity(i);
 
         //왼쪽에서 들어오고 오른쪽으로 나간다.(-> 슬라이드)

@@ -42,6 +42,10 @@ public class LockScreen2Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(kr.ac.hansung.maldives.android.R.layout.lockscreen2);
 
+        Intent i = getIntent();
+        locationAndRating.setLati(i.getDoubleExtra("lati",0));
+        locationAndRating.setLongi(i.getDoubleExtra("longi",0));
+
         setListViewAdapter();
         //checkOverlayPermissions();
 
