@@ -236,6 +236,10 @@ public class LockScreen2Activity extends AppCompatActivity {
             Log.i("infos", "위도(lati)=" + lati + "," + "경도(longi)=" + longi + "," + "infos=" + rating[i]);
         }
 
+        Intent intent = new Intent(this,PopUpActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+
 
         finish();
     }
