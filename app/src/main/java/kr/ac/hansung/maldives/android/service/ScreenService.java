@@ -45,7 +45,7 @@ public class ScreenService extends Service {
     public void onCreate() {
         super.onCreate();
         registerScreenRegister();
-        registerPackageReceiver();
+//        registerPackageReceiver();
 
         registerRestartAlarm(true);
     }

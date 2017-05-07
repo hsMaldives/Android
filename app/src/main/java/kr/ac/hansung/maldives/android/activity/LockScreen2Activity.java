@@ -19,23 +19,24 @@ import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
 import kr.ac.hansung.maldives.android.adapter.RatingAdapter;
-import kr.ac.hansung.maldives.android.model.LocationAndRating;
+import kr.ac.hansung.maldives.android.model.Locations;
+import kr.ac.hansung.maldives.android.model.StoreAndRating;
+import kr.ac.hansung.maldives.android.model.Store_Info;
 
 public class LockScreen2Activity extends AppCompatActivity {
 
-    private LocationAndRating locationAndRating = new LocationAndRating();
+    private StoreAndRating storeAndRating = new StoreAndRating();
+    private Locations locations = new Locations();
+    private Store_Info store_info = new Store_Info();
     private RatingAdapter ratingAdapter;
 
-    private String[] names = {"맛","친절","청결"};
+    private String[] names = {"맛", "친절", "청결"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +44,10 @@ public class LockScreen2Activity extends AppCompatActivity {
         setContentView(kr.ac.hansung.maldives.android.R.layout.lockscreen2);
 
         Intent i = getIntent();
-        locationAndRating.setLati(i.getDoubleExtra("lati",0));
-        locationAndRating.setLongi(i.getDoubleExtra("longi",0));
+
+        storeAndRating.setStore_idx(i.getIntExtra("store_idx", 0));
 
         setListViewAdapter();
-        //checkOverlayPermissions();
 
         //FLAG_SHOW_WHEN_LOCKED - 기본잠금보다 위에 띄워라
         //FLAG_DISSMISS_KEYGUARD - 안드로이드 기본 잠금화면을 없애라. (말을 잘 안듣는다-나중에 수정)
@@ -64,15 +64,13 @@ public class LockScreen2Activity extends AppCompatActivity {
 
     }
 
-    private void setListViewAdapter(){
-        ListView listView = (ListView)findViewById(kr.ac.hansung.maldives.android.R.id.listView);
+    private void setListViewAdapter() {
+        ListView listView = (ListView) findViewById(kr.ac.hansung.maldives.android.R.id.listView);
         ratingAdapter = new RatingAdapter(this, names);
         listView.setAdapter(ratingAdapter);
 
-        locationAndRating.setRating(new float[ratingAdapter.getCount()]);
+        storeAndRating.setRating(new Float[ratingAdapter.getCount()]);
     }
-
-
 
 
     public class SendPost extends AsyncTask<String, Void, String> {
@@ -81,12 +79,13 @@ public class LockScreen2Activity extends AppCompatActivity {
 
         protected String doInBackground(String... args) {
             try {
-                URL url = new URL("http://223.194.145.81:80/WhereYou/api/rating/test");
+                URL url = new URL("http://223.194.145.81:80/WhereYou/api/rating/storeAndRatingInfo");
                 CookieManager cookieManager = CookieManager.getInstance();
 
                 //json 객체화
                 Gson gson = new GsonBuilder().create();
-                String loationAndRatingJson = gson.toJson(locationAndRating);
+
+                String storeAndRatingJson = gson.toJson(storeAndRating);
 
                 //Http 연결 설정
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -95,16 +94,16 @@ public class LockScreen2Activity extends AppCompatActivity {
                 conn.setRequestMethod("POST");
                 conn.setDoInput(true);
                 conn.setDoOutput(true);
-                conn.setRequestProperty("Content-Type","application/json");
+                conn.setRequestProperty("Content-Type", "application/json");
 
                 conn.setRequestProperty("Cookie", cookieManager.getCookie(url.toString()));
 
-                String cookie ;
+                String cookie;
 
 
                 OutputStream os = conn.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-                writer.write(loationAndRatingJson);
+                writer.write(storeAndRatingJson);
 
                 writer.flush();
                 writer.close();
@@ -135,12 +134,12 @@ public class LockScreen2Activity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-        //Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
         }
     }
 
 
-    public void onBeforeButtonClicked(View v){
+    public void onBeforeButtonClicked(View v) {
         Intent intent = new Intent(this, MapsActivity.class);
         startActivity(intent);
 
@@ -149,10 +148,10 @@ public class LockScreen2Activity extends AppCompatActivity {
     }
 
     public void onFinishButtonClicked(View v) {
-        for(int i=0;i<locationAndRating.getRating().length;i++) {
+        for (int i = 0; i < storeAndRating.getRating().length; i++) {
             RatingBar ratingBar = (RatingBar) ratingAdapter.getItem(i);
-            locationAndRating.getRating()[i] = ratingBar.getRating();
-            Log.i("infos", "위도(lati)=" + locationAndRating.getLati() + "," + "경도(longi)=" + locationAndRating.getLongi() + "," + "infos=" + locationAndRating.getRating()[i]);
+            storeAndRating.getRating()[i] = ratingBar.getRating();
+            Log.i("infos", "위도(lati)=" + locations.getLati() + "," + "경도(longi)=" + locations.getLongi() + "," + "infos=" + storeAndRating.getRating()[i]);
         }
 
         new SendPost().execute();

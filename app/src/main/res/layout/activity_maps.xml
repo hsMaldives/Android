@@ -1,70 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:id="@+id/mapView"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:orientation="horizontal">
-
-<TextView
-    android:id="@+id/checktext"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mapView"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:textAlignment="center"
-    android:layout_gravity="center"
-    android:text="현재 이 위치가 맞나요?"
-    android:layout_marginTop="16dp"
-    android:layout_alignParentTop="true"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentStart="true" />
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-<TextView
-    android:id="@+id/address"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:textAlignment="center"
-    android:layout_gravity="center"
-    android:text="Address"
-    android:layout_marginTop="21dp"
-    android:layout_below="@+id/checktext"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentStart="true" />
-
-    <fragment
-        xmlns:map="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
+    <TextView
+        android:id="@+id/checktext"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="com.example.kgt.lock.kr.example.kgt.lock.activity.MapsActivity"
-        android:layout_above="@+id/check"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/address"/>
+        android:layout_alignParentTop="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:text="현재 이 위치가 맞나요?"
+        android:textAlignment="center" />
 
-<Button
-    android:id="@+id/check"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="O"
-    android:onClick="onCheckButtonClicked"
-    android:layout_alignParentBottom="true"
-    android:layout_alignParentRight="true"
-    android:layout_alignParentEnd="true"
-    android:layout_marginRight="33dp"
-    android:layout_marginEnd="33dp"
-    android:layout_marginBottom="15dp" />
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="164dp" />
 
-<Button
-    android:id="@+id/nocheck"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="X"
-    android:onClick="onNoCheckButtonClicked"
-    android:layout_marginLeft="31dp"
-    android:layout_marginStart="31dp"
-    android:layout_below="@+id/map"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentStart="true" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</RelativeLayout>
+        <Button
+            android:id="@+id/check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="33dp"
+            android:layout_marginRight="33dp"
+            android:onClick="onCheckButtonClicked"
+            android:text="평가"
+            android:layout_alignParentBottom="true" />
+
+        <Button
+            android:id="@+id/nocheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="37dp"
+            android:layout_marginStart="37dp"
+            android:onClick="onNoCheckButtonClicked"
+            android:text="추가" />
+
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="168dp"
+            android:layout_above="@+id/check"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            tools:context="com.example.kgt.lock.kr.example.kgt.lock.activity.MapsActivity" />
+    </RelativeLayout>
+</LinearLayout>

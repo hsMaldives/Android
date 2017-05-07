@@ -1,10 +1,8 @@
 package kr.ac.hansung.maldives.android.activity;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -12,16 +10,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
-import java.util.logging.Logger;
-
-import kr.ac.hansung.maldives.android.service.ScreenService;
 import kr.ac.hansung.maldives.android.webinterface.WebViewInterface;
 
 public class MainAppActivity extends AppCompatActivity {
@@ -45,7 +37,8 @@ public class MainAppActivity extends AppCompatActivity {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl("http://223.194.145.81:80/WhereYou");
         webView.setWebViewClient(new WebViewClient());
-        webView.setWebChromeClient(new WebChromeClient(){});
+        webView.setWebChromeClient(new WebChromeClient() {
+        });
         webView.addJavascriptInterface(new WebViewInterface(this, webView), "whereYou");
     }
 
