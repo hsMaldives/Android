@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.widget.ListView;
 import android.widget.RatingBar;
 
@@ -22,11 +21,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.CookieHandler;
 import java.net.CookiePolicy;
-import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 

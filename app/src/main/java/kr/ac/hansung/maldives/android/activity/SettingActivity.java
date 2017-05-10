@@ -25,7 +25,6 @@ public class SettingActivity extends AppCompatActivity {
         Toast.makeText(this, "startService", Toast.LENGTH_SHORT).show();
 
         SharedPreferences sharedPref = getSharedPreferences("bootConfig.pref", Context.MODE_PRIVATE);
-        ;
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean("isBoot", true);
         editor.commit();
