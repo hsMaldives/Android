@@ -38,6 +38,8 @@ import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.net.CookieHandler;
+import java.net.CookiePolicy;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -45,6 +47,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 import kr.ac.hansung.maldives.android.R;
 import kr.ac.hansung.maldives.android.model.Locations;
+import kr.ac.hansung.maldives.android.proxy.WebkitCookieManagerProxy;
 
 import static android.view.WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED;
 
@@ -221,8 +224,11 @@ public class LockScreenActivity extends AppCompatActivity {
 
         protected String doInBackground(String... args) {
             try {
+                CookieManager.getInstance().setAcceptCookie(true);
+                WebkitCookieManagerProxy coreCookieManager = new WebkitCookieManagerProxy(null, CookiePolicy.ACCEPT_ALL);
+                CookieHandler.setDefault(coreCookieManager);
+
                 URL url = new URL("http://223.194.145.81:80/WhereYou/api/rating/onlyLocationInfo");
-                CookieManager cookieManager = CookieManager.getInstance();
 
                 //json 객체화
                 Gson gson = new GsonBuilder().create();
@@ -236,8 +242,6 @@ public class LockScreenActivity extends AppCompatActivity {
                 conn.setDoInput(true);
                 conn.setDoOutput(true);
                 conn.setRequestProperty("Content-Type", "application/json");
-
-                conn.setRequestProperty("Cookie", cookieManager.getCookie(url.toString()));
 
                 String cookie;
 

@@ -37,8 +37,7 @@ public class MainAppActivity extends AppCompatActivity {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl("http://223.194.145.81:80/WhereYou");
         webView.setWebViewClient(new WebViewClient());
-        webView.setWebChromeClient(new WebChromeClient() {
-        });
+        webView.setWebChromeClient(new WebChromeClient() {  });
         webView.addJavascriptInterface(new WebViewInterface(this, webView), "whereYou");
     }
 

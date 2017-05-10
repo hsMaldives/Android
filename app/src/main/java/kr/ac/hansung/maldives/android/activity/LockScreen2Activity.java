@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.widget.ListView;
 import android.widget.RatingBar;
 
@@ -19,8 +20,13 @@ import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.net.CookieHandler;
+import java.net.CookiePolicy;
+import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
+import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -28,6 +34,7 @@ import kr.ac.hansung.maldives.android.adapter.RatingAdapter;
 import kr.ac.hansung.maldives.android.model.Locations;
 import kr.ac.hansung.maldives.android.model.StoreAndRating;
 import kr.ac.hansung.maldives.android.model.Store_Info;
+import kr.ac.hansung.maldives.android.proxy.WebkitCookieManagerProxy;
 
 public class LockScreen2Activity extends AppCompatActivity {
 
@@ -79,8 +86,11 @@ public class LockScreen2Activity extends AppCompatActivity {
 
         protected String doInBackground(String... args) {
             try {
+                CookieManager.getInstance().setAcceptCookie(true);
+                WebkitCookieManagerProxy coreCookieManager = new WebkitCookieManagerProxy(null, CookiePolicy.ACCEPT_ALL);
+                CookieHandler.setDefault(coreCookieManager);
+
                 URL url = new URL("http://223.194.145.81:80/WhereYou/api/rating/storeAndRatingInfo");
-                CookieManager cookieManager = CookieManager.getInstance();
 
                 //json 객체화
                 Gson gson = new GsonBuilder().create();
@@ -95,11 +105,6 @@ public class LockScreen2Activity extends AppCompatActivity {
                 conn.setDoInput(true);
                 conn.setDoOutput(true);
                 conn.setRequestProperty("Content-Type", "application/json");
-
-                conn.setRequestProperty("Cookie", cookieManager.getCookie(url.toString()));
-
-                String cookie;
-
 
                 OutputStream os = conn.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
