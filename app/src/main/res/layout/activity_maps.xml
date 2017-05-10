@@ -22,35 +22,35 @@
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="164dp" />
+        android:layout_height="164dp"
+        android:layout_marginBottom="7dp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
 
         <Button
             android:id="@+id/check"
-            android:layout_width="wrap_content"
+            android:layout_width="192dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginEnd="33dp"
-            android:layout_marginRight="33dp"
             android:onClick="onCheckButtonClicked"
+            android:background="@drawable/quantum_ic_skip_next_white_36"
             android:text="평가"
-            android:layout_alignParentBottom="true" />
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@+id/nocheck"
+            android:layout_toEndOf="@+id/nocheck" />
 
         <Button
             android:id="@+id/nocheck"
-            android:layout_width="wrap_content"
+            android:layout_width="192dp"
             android:layout_height="wrap_content"
+            android:onClick="onNoCheckButtonClicked"
+            android:background="@drawable/quantum_ic_skip_next_white_36"
+            android:text="추가"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="37dp"
-            android:layout_marginStart="37dp"
-            android:onClick="onNoCheckButtonClicked"
-            android:text="추가" />
+            android:layout_alignParentStart="true" />
 
         <fragment
             android:id="@+id/map"

@@ -39,7 +39,7 @@ public class LockScreen2Activity extends AppCompatActivity {
     private Store_Info store_info = new Store_Info();
     private RatingAdapter ratingAdapter;
 
-    private String[] names = {"맛", "친절", "청결"};
+    private String[] names = {"가격", "맛", "위생","친절","양"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
