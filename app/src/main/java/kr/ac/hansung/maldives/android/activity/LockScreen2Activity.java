@@ -145,7 +145,7 @@ public class LockScreen2Activity extends AppCompatActivity {
 
 
     public void onBeforeButtonClicked(View v) {
-        Intent intent = new Intent(this, MapsActivity.class);
+        Intent intent = new Intent(this, DaumMapStoreListActivity.class);
         startActivity(intent);
 
         overridePendingTransition(kr.ac.hansung.maldives.android.R.anim.in_from_right, kr.ac.hansung.maldives.android.R.anim.out_to_left);

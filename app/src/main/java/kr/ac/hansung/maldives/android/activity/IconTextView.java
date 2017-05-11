@@ -6,6 +6,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import kr.ac.hansung.maldives.android.R;
+import kr.ac.hansung.maldives.android.model.DaumStoreItem;
 import kr.ac.hansung.maldives.android.model.Store_Info;
 
 /**
@@ -17,17 +18,17 @@ public class IconTextView extends LinearLayout{
     private TextView storename;
     private TextView storeaddress;
 
-    public IconTextView(Context context, Store_Info store_info) {
+    public IconTextView(Context context, DaumStoreItem store_info) {
         super(context);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.liststore, this, true);
 
         storename = (TextView) findViewById(R.id.storename);
-        storename.setText(store_info.getName());
+        storename.setText(store_info.title);
 
         storeaddress = (TextView) findViewById(R.id.storeaddress);
-        storeaddress.setText(store_info.getAddress());
+        storeaddress.setText(store_info.address);
     }
 
     public void setText(int index, String data) {

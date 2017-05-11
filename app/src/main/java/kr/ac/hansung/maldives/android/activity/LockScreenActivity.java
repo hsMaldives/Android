@@ -90,7 +90,7 @@ public class LockScreenActivity extends AppCompatActivity {
     };
 
     private void goToMapView() {
-        Intent i = new Intent(this, MapsActivity.class);
+        Intent i = new Intent(this, DaumMapStoreListActivity.class);
         //intent.addFlags(FLAG_ACTIVITY_REORDER_TO_FRONT);
         //i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
