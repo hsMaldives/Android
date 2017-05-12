@@ -14,7 +14,7 @@ public class ScreenReceiver extends BroadcastReceiver {
     //바로 화면이 꺼졌을 때 ACTION_SCREEN_OFF-Intent를 받음, 참고로 화면이 켜질 때는 ACTION_SCREEN_ON 이라는 Intent가 broadcast 됩니다. ACTION_SCREEN_OFF 를 받으면 위에서 만든 LockScreenActivity를 띄우면 됩니다.
 
     private KeyguardManager km = null;
-    private KeyguardManager.KeyguardLock keyLock = null;
+//    private KeyguardManager.KeyguardLock keyLock = null;
 
     private TelephonyManager telephonyManager = null;
     private  boolean isPhoneIdle = true;
@@ -26,8 +26,8 @@ public class ScreenReceiver extends BroadcastReceiver {
             if(km == null)
                 km = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
 
-            if(keyLock == null)
-                keyLock = km.newKeyguardLock(Context.KEYGUARD_SERVICE);
+//            if(keyLock == null)
+//                keyLock = km.newKeyguardLock(Context.KEYGUARD_SERVICE);
 
             if(telephonyManager == null){
                 telephonyManager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
@@ -46,12 +46,12 @@ public class ScreenReceiver extends BroadcastReceiver {
 
     //기본 잠금화면 나타내기
     public void reenableKeyguard() {
-        keyLock.reenableKeyguard();
+//        keyLock.reenableKeyguard();
     }
 
     //기본 잠금화면 없애기
     public void disableKeyguard(){
-        keyLock.disableKeyguard();
+//        keyLock.disableKeyguard();
     }
 
 

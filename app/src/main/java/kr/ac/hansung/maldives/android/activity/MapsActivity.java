@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -77,6 +78,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     //매장 위치만 보내는지 저장
     private boolean locationOnlyflag = false;
 
+    //알림사용여부
+    private boolean notificationflag;
+
     private Store_Info store1 = new Store_Info();
     private Store_Info store2 = new Store_Info();
     private Store_Info store3 = new Store_Info();
@@ -89,8 +93,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
 
         Intent i = getIntent();
-         //
+        //
         locationOnlyflag = i.getBooleanExtra("locationOnlyflag", locationOnlyflag);
+
+        SharedPreferences sharedPref = getSharedPreferences("notificationConfig.pref", Context.MODE_PRIVATE);
+        notificationflag = (Boolean) sharedPref.getBoolean("notificationflag", true);
 
         //리스트뷰
         listView = (ListView) findViewById(R.id.listView);
@@ -152,7 +159,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 String storename = curStore.getName();
                 String storeaddress = curStore.getAddress();
                 selectedNum = position;
-                showCurrentLocation(list_store.getList_Store().get(selectedNum).getLatitude(),list_store.getList_Store().get(selectedNum).getLongitude());
+                showCurrentLocation(list_store.getList_Store().get(selectedNum).getLatitude(), list_store.getList_Store().get(selectedNum).getLongitude());
 
                 Toast.makeText(getApplicationContext(), "Selected : " + storename + storeaddress, Toast.LENGTH_LONG).show();
             }
@@ -181,7 +188,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     Handler handler = new Handler() {
         public void handleMessage(Message msg) {
-            showBasicNotification();
+            if (notificationflag)
+                showBasicNotification();
             //@@gt 예상되는 버그 -> 버튼을 누를 때마다 알림은 큐에 쌓이므로 계속해서 notification을 발생시킬 것이다. (퍼포먼스문제)
         }
     };
@@ -364,22 +372,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //                        textListAdapter.addItem(list_store.getList_Store().get(i));
 //                    }
 //                    listView.setAdapter(textListAdapter);
-            showCurrentLocation(list_store.getList_Store().get(0).getLatitude(),list_store.getList_Store().get(0).getLongitude());
+            showCurrentLocation(list_store.getList_Store().get(0).getLatitude(), list_store.getList_Store().get(0).getLongitude());
         }
 
     }
 
     //안드4.1?부터 새로운 노티피케이션 형식(일반적인 형식)
-    public void showBasicNotification(){
+    public void showBasicNotification() {
         NotificationCompat.Builder mBuilder = createNotification();
         mBuilder.setContentIntent(createPendingIntent());
 
-        NotificationManager mNotificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(1,mBuilder.build());
-
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(1, mBuilder.build());
     }
 
-    private NotificationCompat.Builder createNotification(){
+    private NotificationCompat.Builder createNotification() {
         Bitmap icon = BitmapFactory.decodeResource(getResources(), R.mipmap.placeholder);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.placeholder)
@@ -390,7 +397,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .setAutoCancel(true)
                 .setWhen(System.currentTimeMillis())
                 .setDefaults(Notification.DEFAULT_ALL);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             builder.setCategory(Notification.CATEGORY_MESSAGE)
                     .setPriority(Notification.PRIORITY_HIGH)
                     .setVisibility(Notification.VISIBILITY_PUBLIC);
@@ -400,11 +407,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     /**
      * 노티피케이션을 누르면 실행되는 기능을 가져오는 노티피케이션
-     *
+     * <p>
      * 실제 기능을 추가하는 것
+     *
      * @return
      */
-    private PendingIntent createPendingIntent(){
+    private PendingIntent createPendingIntent() {
         Intent resultIntent = new Intent(this, MainAppActivity.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addParentStack(MainAppActivity.class);
@@ -462,12 +470,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void onCheckButtonClicked(View v) {
 
-        if(locationOnlyflag == true) {
+        if (locationOnlyflag == true) {
             //위치랑 매장정보 보내고
             finish();
-            handler.sendEmptyMessageDelayed(0,10000);   //일정시간(ms) 지연시킨다. (1000ms = 1s)
-        }
-        else {
+            handler.sendEmptyMessageDelayed(0, 5000);   //일정시간(ms) 지연시킨다. (1000ms = 1s)
+
+        } else {
             goToLockScreen2();
         }
     }

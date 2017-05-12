@@ -28,16 +28,4 @@
         android:layout_alignLeft="@+id/lockScreenSwitch"
         android:layout_alignStart="@+id/lockScreenSwitch" />
 
-    <!--<Button-->
-        <!--android:id="@+id/btn2"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:onClick="onStopButtonClicked"-->
-        <!--android:text="STOPSERVICE"-->
-        <!--tools:layout_editor_absoluteX="131dp"-->
-        <!--tools:layout_editor_absoluteY="231dp"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_alignParentEnd="true" />-->
-
 </RelativeLayout>
