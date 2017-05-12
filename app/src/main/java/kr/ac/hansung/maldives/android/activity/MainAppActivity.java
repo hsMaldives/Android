@@ -14,6 +14,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import kr.ac.hansung.maldives.android.R;
 import kr.ac.hansung.maldives.android.webinterface.WebViewInterface;
 
 public class MainAppActivity extends AppCompatActivity {
@@ -33,11 +34,27 @@ public class MainAppActivity extends AppCompatActivity {
     }
 
     private void webViewConfig() {
-        WebView webView = (WebView) findViewById(kr.ac.hansung.maldives.android.R.id.webView);
+        final WebView webView = (WebView) findViewById(kr.ac.hansung.maldives.android.R.id.webView);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl("http://223.194.145.81:80/WhereYou");
-        webView.setWebViewClient(new WebViewClient());
-        webView.setWebChromeClient(new WebChromeClient() {  });
+        webView.setWebViewClient(new WebViewClient() {
+
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                super.onReceivedError(view, errorCode, description, failingUrl);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainAppActivity.this);
+                builder.setTitle("Network Error!!!");
+                builder.setMessage("네트워크 상태가 원활하지 않습니다. 페이지를 이동합니다.");
+                builder.setNeutralButton("확인", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                                goToSetting();
+                    }
+                });
+                builder.show();
+            }
+        });
+        webView.setWebChromeClient(new WebChromeClient() {});
         webView.addJavascriptInterface(new WebViewInterface(this, webView), "whereYou");
     }
 
@@ -113,5 +130,16 @@ public class MainAppActivity extends AppCompatActivity {
         } else {
             return true;
         }
+    }
+
+    private void goToSetting() {
+        Intent i = new Intent(this, SettingActivity.class);
+
+        startActivity(i);
+
+        //왼쪽에서 들어오고 오른쪽으로 나간다.(-> 슬라이드)
+        overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+
+        finish();
     }
 }

@@ -6,28 +6,38 @@
     android:layout_height="match_parent"
     tools:context="kr.ac.hansung.maldives.android.activity.SettingActivity">
 
-    <Button
-        android:id="@+id/btn1"
+    <Switch
+        android:id="@+id/lockScreenSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="onStartButtonClicked"
-        android:text="StartService"
-        tools:layout_editor_absoluteX="127dp"
-        tools:layout_editor_absoluteY="148dp"
+        android:text="잠금화면 사용"
+        android:layout_marginTop="35dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="36dp"
+        android:layout_marginStart="36dp" />
 
-    <Button
-        android:id="@+id/btn2"
+    <Switch
+        android:id="@+id/notificationSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="onStopButtonClicked"
-        android:text="STOPSERVICE"
-        tools:layout_editor_absoluteX="131dp"
-        tools:layout_editor_absoluteY="231dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:text="Notification 사용"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/lockScreenSwitch"
+        android:layout_alignLeft="@+id/lockScreenSwitch"
+        android:layout_alignStart="@+id/lockScreenSwitch" />
+
+    <!--<Button-->
+        <!--android:id="@+id/btn2"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:onClick="onStopButtonClicked"-->
+        <!--android:text="STOPSERVICE"-->
+        <!--tools:layout_editor_absoluteX="131dp"-->
+        <!--tools:layout_editor_absoluteY="231dp"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_alignParentEnd="true" />-->
 
 </RelativeLayout>
