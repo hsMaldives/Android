@@ -5,6 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+
+import kr.ac.hansung.maldives.model.DaumStoreItem;
 import kr.ac.hansung.maldives.android.activity.IconTextView;
 import kr.ac.hansung.maldives.android.model.List_Store;
 import kr.ac.hansung.maldives.android.model.Store_Info;
@@ -22,7 +24,7 @@ public class TextListAdapter extends BaseAdapter {
         mContext = context;
     }
 
-    public void addItem(Store_Info store_info) {
+    public void addItem(DaumStoreItem store_info) {
         list_store.getList_Store().add(store_info);
     }
 
@@ -43,13 +45,13 @@ public class TextListAdapter extends BaseAdapter {
         return false;
     }
 
-    public boolean isSelectable(int position) {
-        try {
-            return list_store.getList_Store().get(position).isSelectable();
-        } catch (IndexOutOfBoundsException ex) {
-            return false;
-        }
-    }
+//    public boolean isSelectable(int position) {
+//        try {
+//            return list_store.getList_Store().get(position).isSelectable();
+//        } catch (IndexOutOfBoundsException ex) {
+//            return false;
+//        }
+//    }
 
     public long getItemId(int position) {
         return position;
@@ -62,7 +64,7 @@ public class TextListAdapter extends BaseAdapter {
         } else {
             itemView = (IconTextView) convertView;
 
-            itemView.setText(0, list_store.getList_Store().get(position).getName());
+            itemView.setText(0, list_store.getList_Store().get(position).getTitle());
             itemView.setText(1, list_store.getList_Store().get(position).getAddress());
         }
 

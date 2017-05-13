@@ -3,19 +3,21 @@ package kr.ac.hansung.maldives.android.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import kr.ac.hansung.maldives.model.DaumStoreItem;
+
 /**
  * Created by jeeyoung on 2017-05-04.
  */
 
 public class List_Store {
 
-    private ArrayList<Store_Info> list_Store = new ArrayList<Store_Info>();
+    private ArrayList<DaumStoreItem> list_Store = new ArrayList<DaumStoreItem>();
 
-    public void setList_Store(List<Store_Info> list_Store) {
-        this.list_Store = (ArrayList<Store_Info>) list_Store;
+    public void setList_Store(List<DaumStoreItem> list_Store) {
+        this.list_Store = (ArrayList<DaumStoreItem>) list_Store;
     }
 
-    public List<Store_Info> getList_Store() {
+    public List<DaumStoreItem> getList_Store() {
         return list_Store;
     }
 }

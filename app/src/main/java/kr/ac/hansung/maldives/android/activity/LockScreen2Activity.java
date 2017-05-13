@@ -26,17 +26,14 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import kr.ac.hansung.maldives.model.DaumStoreItem;
 import kr.ac.hansung.maldives.android.adapter.RatingAdapter;
-import kr.ac.hansung.maldives.android.model.Locations;
-import kr.ac.hansung.maldives.android.model.StoreAndRating;
-import kr.ac.hansung.maldives.android.model.Store_Info;
+import kr.ac.hansung.maldives.model.StoreAndRating;
 import kr.ac.hansung.maldives.android.proxy.WebkitCookieManagerProxy;
 
 public class LockScreen2Activity extends AppCompatActivity {
 
     private StoreAndRating storeAndRating = new StoreAndRating();
-    private Locations locations = new Locations();
-    private Store_Info store_info = new Store_Info();
     private RatingAdapter ratingAdapter;
 
     private String[] names = {"가격", "맛", "위생","친절","양"};
@@ -48,7 +45,8 @@ public class LockScreen2Activity extends AppCompatActivity {
 
         Intent i = getIntent();
 
-        storeAndRating.setStore_idx(i.getIntExtra("store_idx", 0));
+        DaumStoreItem storeInfo = (DaumStoreItem) i.getSerializableExtra("StoreInfo");
+        storeAndRating.setStoreInfo(storeInfo);
 
         setListViewAdapter();
 
@@ -86,7 +84,7 @@ public class LockScreen2Activity extends AppCompatActivity {
                 WebkitCookieManagerProxy coreCookieManager = new WebkitCookieManagerProxy(null, CookiePolicy.ACCEPT_ALL);
                 CookieHandler.setDefault(coreCookieManager);
 
-                URL url = new URL("http://223.194.145.81:80/WhereYou/api/rating/storeAndRatingInfo");
+                URL url = new URL("http://192.168.1.134:8080/WhereYou/api/rating/storeAndRatingInfo");
 
                 //json 객체화
                 Gson gson = new GsonBuilder().create();
@@ -141,7 +139,7 @@ public class LockScreen2Activity extends AppCompatActivity {
 
 
     public void onBeforeButtonClicked(View v) {
-        Intent intent = new Intent(this, MapsActivity.class);
+        Intent intent = new Intent(this, DaumMapStoreListActivity.class);
         startActivity(intent);
 
         overridePendingTransition(kr.ac.hansung.maldives.android.R.anim.in_from_right, kr.ac.hansung.maldives.android.R.anim.out_to_left);
@@ -152,7 +150,7 @@ public class LockScreen2Activity extends AppCompatActivity {
         for (int i = 0; i < storeAndRating.getRating().length; i++) {
             RatingBar ratingBar = (RatingBar) ratingAdapter.getItem(i);
             storeAndRating.getRating()[i] = ratingBar.getRating();
-            Log.i("infos", "위도(lati)=" + locations.getLati() + "," + "경도(longi)=" + locations.getLongi() + "," + "infos=" + storeAndRating.getRating()[i]);
+            Log.i("infos", "매장명: " + storeAndRating.getStoreInfo().getTitle() + "," + "infos=" + storeAndRating.getRating()[i]);
         }
 
         new SendPost().execute();
