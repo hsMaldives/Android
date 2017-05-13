@@ -5,8 +5,9 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+
+import kr.ac.hansung.maldives.model.DaumStoreItem;
 import kr.ac.hansung.maldives.android.R;
-import kr.ac.hansung.maldives.android.model.DaumStoreItem;
 import kr.ac.hansung.maldives.android.model.Store_Info;
 
 /**
@@ -25,10 +26,10 @@ public class IconTextView extends LinearLayout{
         inflater.inflate(R.layout.liststore, this, true);
 
         storename = (TextView) findViewById(R.id.storename);
-        storename.setText(store_info.title);
+        storename.setText(store_info.getTitle());
 
         storeaddress = (TextView) findViewById(R.id.storeaddress);
-        storeaddress.setText(store_info.address);
+        storeaddress.setText(store_info.getAddress());
     }
 
     public void setText(int index, String data) {

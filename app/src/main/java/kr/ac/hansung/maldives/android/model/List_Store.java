@@ -3,6 +3,8 @@ package kr.ac.hansung.maldives.android.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import kr.ac.hansung.maldives.model.DaumStoreItem;
+
 /**
  * Created by jeeyoung on 2017-05-04.
  */

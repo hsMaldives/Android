@@ -1,19 +1,17 @@
-package kr.ac.hansung.maldives.android.model;
+package kr.ac.hansung.maldives.model;
 
-/**
- * Created by jeeyoung on 2017-05-04.
- */
+import java.util.Arrays;
 
 public class StoreAndRating {
 
     private DaumStoreItem storeInfo;
     private Float rating[];
 
-    public void setStoreInfo(DaumStoreItem storeInfo){
+    public void setStoreInfo(DaumStoreItem storeInfo) {
         this.storeInfo = storeInfo;
     }
 
-    public DaumStoreItem getStoreInfo(){
+    public DaumStoreItem getStoreInfo() {
         return storeInfo;
     }
 
@@ -23,5 +21,10 @@ public class StoreAndRating {
 
     public Float[] getRating() {
         return rating;
+    }
+
+    @Override
+    public String toString() {
+        return "StoreAndRating [storeInfo=" + storeInfo + ", rating=" + Arrays.toString(rating) + "]";
     }
 }

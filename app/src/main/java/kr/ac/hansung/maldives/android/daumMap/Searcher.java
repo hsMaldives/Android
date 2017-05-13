@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import kr.ac.hansung.maldives.android.model.DaumStoreItem;
+import kr.ac.hansung.maldives.model.DaumStoreItem;
 
 public class Searcher {
     // http://dna.daum.net/apis/local
@@ -154,20 +154,20 @@ public class Searcher {
 			for (int i = 0; i < objects.length(); i++) {
 				JSONObject object = objects.getJSONObject(i);
 				DaumStoreItem item = new DaumStoreItem();
-				item.title = object.getString("title");
-				item.imageUrl = object.getString("imageUrl");
-				item.address = object.getString("address");
-				item.newAddress = object.getString("newAddress");
-				item.zipcode = object.getString("zipcode");
-				item.phone = object.getString("phone");
-				item.category = object.getString("category");
-				item.latitude = object.getDouble("latitude");
-				item.longitude = object.getDouble("longitude");
-				item.distance = object.getDouble("distance");
-				item.direction = object.getString("direction");
-				item.id = object.getString("id");
-				item.placeUrl = object.getString("placeUrl");
-				item.addressBCode = object.getString("addressBCode");
+				item.setTitle(object.getString("title"));
+				item.setImageUrl(object.getString("imageUrl"));
+				item.setAddress(object.getString("address"));
+				item.setNewAddress(object.getString("newAddress"));
+				item.setZipcode(object.getString("zipcode"));
+				item.setPhone(object.getString("phone"));
+				item.setCategory(object.getString("category"));
+				item.setLatitude(object.getDouble("latitude"));
+				item.setLongitude(object.getDouble("longitude"));
+				item.setDistance(object.getDouble("distance"));
+				item.setDirection(object.getString("direction"));
+				item.setId(object.getString("id"));
+				item.setPlaceUrl(object.getString("placeUrl"));
+				item.setAddressBCode(object.getString("addressBCode"));
 				itemList.add(item);
 			}
 		} catch (Exception e) {
@@ -176,7 +176,7 @@ public class Searcher {
 		}
 		return itemList;
 	}
-	
+
 	public void cancel() {
 		if (searchTask != null) {
 			searchTask.cancel(true);

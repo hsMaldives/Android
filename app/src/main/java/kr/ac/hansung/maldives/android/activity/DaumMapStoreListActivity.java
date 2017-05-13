@@ -52,11 +52,11 @@ import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import kr.ac.hansung.maldives.model.DaumStoreItem;
 import kr.ac.hansung.maldives.android.R;
 import kr.ac.hansung.maldives.android.adapter.TextListAdapter;
 import kr.ac.hansung.maldives.android.daumMap.OnFinishSearchListener;
 import kr.ac.hansung.maldives.android.daumMap.Searcher;
-import kr.ac.hansung.maldives.android.model.DaumStoreItem;
 import kr.ac.hansung.maldives.android.model.List_Store;
 import kr.ac.hansung.maldives.android.model.Locations;
 import kr.ac.hansung.maldives.android.model.Store_Info;
@@ -72,10 +72,8 @@ public class DaumMapStoreListActivity extends FragmentActivity implements MapVie
     private TextListAdapter textListAdapter;
 
     private Locations locations = new Locations();
-    private Store_Info store_info = new Store_Info();
-    private List_Store list_store = new List_Store();
 
-    private Integer selectedNum;
+    private DaumStoreItem selectedItem;
 
     private HashMap<Integer, DaumStoreItem> mTagItemMap = new HashMap<>();
 
@@ -103,12 +101,12 @@ public class DaumMapStoreListActivity extends FragmentActivity implements MapVie
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 DaumStoreItem curStore = (DaumStoreItem) textListAdapter.getItem(position);
-                String storename = curStore.title;
-                String storeaddress = curStore.address;
-                selectedNum = position;
+                String storename = curStore.getTitle();
+                String storeaddress = curStore.getAddress();
 
                 mTagItemMap.get(curStore);
                 mMapView.selectPOIItem(mMapView.getPOIItems()[position], true);
+                selectedItem = curStore;
 
                 Toast.makeText(getApplicationContext(), "Selected : " + storename + storeaddress, Toast.LENGTH_LONG).show();
             }
@@ -133,11 +131,11 @@ public class DaumMapStoreListActivity extends FragmentActivity implements MapVie
         );
     }
 
-        public void startLocationService() {
+    public void startLocationService() {
         // 위치 관리자 객체 참조
         LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        long minTime = 1000;
+        long minTime = 1000000;
         float minDistance = 10;
 
         try {
@@ -201,10 +199,10 @@ public class DaumMapStoreListActivity extends FragmentActivity implements MapVie
             if (item == null) return null;
             ImageView imageViewBadge = (ImageView) mCalloutBalloon.findViewById(R.id.badge);
             TextView textViewTitle = (TextView) mCalloutBalloon.findViewById(R.id.title);
-            textViewTitle.setText(item.title);
+            textViewTitle.setText(item.getTitle());
             TextView textViewDesc = (TextView) mCalloutBalloon.findViewById(R.id.desc);
-            textViewDesc.setText(item.address);
-            imageViewBadge.setImageDrawable(createDrawableFromUrl(item.imageUrl));
+            textViewDesc.setText(item.getAddress());
+            imageViewBadge.setImageDrawable(createDrawableFromUrl(item.getImageUrl()));
             return mCalloutBalloon;
         }
 
@@ -212,13 +210,12 @@ public class DaumMapStoreListActivity extends FragmentActivity implements MapVie
         public View getPressedCalloutBalloon(MapPOIItem poiItem) {
             return null;
         }
-
     }
 
     protected void findStoreList(Location location){
         double latitude = location.getLatitude(); // 위도
         double longitude = location.getLongitude(); // 경도
-        int radius = 100; // 중심 좌표부터의 반경거리. 특정 지역을 중심으로 검색하려고 할 경우 사용. meter 단위 (0 ~ 10000)
+        int radius = 500; // 중심 좌표부터의 반경거리. 특정 지역을 중심으로 검색하려고 할 경우 사용. meter 단위 (0 ~ 10000)
         int page = 1; // 페이지 번호 (1 ~ 3). 한페이지에 15개
         String apikey = DaumApiProp.DAUM_MAPS_ANDROID_APP_API_KEY;
 
@@ -240,13 +237,15 @@ public class DaumMapStoreListActivity extends FragmentActivity implements MapVie
     private void showResult(List<DaumStoreItem> itemList) {
         MapPointBounds mapPointBounds = new MapPointBounds();
 
+        textListAdapter.setList_store(new List_Store());
+
         for (int i = 0; i < itemList.size(); i++) {
             DaumStoreItem item = itemList.get(i);
 
             MapPOIItem poiItem = new MapPOIItem();
-            poiItem.setItemName(item.title);
+            poiItem.setItemName(item.getTitle());
             poiItem.setTag(i);
-            MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(item.latitude, item.longitude);
+            MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(item.getLatitude(), item.getLongitude());
             poiItem.setMapPoint(mapPoint);
             mapPointBounds.add(mapPoint);
             poiItem.setMarkerType(MapPOIItem.MarkerType.CustomImage);
@@ -255,6 +254,7 @@ public class DaumMapStoreListActivity extends FragmentActivity implements MapVie
             poiItem.setCustomSelectedImageResourceId(R.drawable.map_pin_red);
             poiItem.setCustomImageAutoscale(false);
             poiItem.setCustomImageAnchor(0.5f, 1.0f);
+            poiItem.setUserObject(item);
 
             mMapView.addPOIItem(poiItem);
             mTagItemMap.put(poiItem.getTag(), item);
@@ -273,7 +273,13 @@ public class DaumMapStoreListActivity extends FragmentActivity implements MapVie
     private void goToLockScreen2() {
         Intent i = new Intent(this, LockScreen2Activity.class);
 
-        i.putExtra("StoreInfo", list_store.getList_Store().get(selectedNum));
+        if(selectedItem == null){
+            Toast.makeText(this, "매장을 선택해 주세요", Toast.LENGTH_SHORT);
+
+            return;
+        }
+
+        i.putExtra("StoreInfo", selectedItem);
         startActivity(i);
 
         //왼쪽에서 들어오고 오른쪽으로 나간다.(-> 슬라이드)
@@ -304,20 +310,6 @@ public class DaumMapStoreListActivity extends FragmentActivity implements MapVie
 
     @Override
     public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem, MapPOIItem.CalloutBalloonButtonType calloutBalloonButtonType) {
-        DaumStoreItem item = mTagItemMap.get(mapPOIItem.getTag());
-        StringBuilder sb = new StringBuilder();
-        sb.append("title=").append(item.title).append("\n");
-        sb.append("imageUrl=").append(item.imageUrl).append("\n");
-        sb.append("address=").append(item.address).append("\n");
-        sb.append("newAddress=").append(item.newAddress).append("\n");
-        sb.append("zipcode=").append(item.zipcode).append("\n");
-        sb.append("phone=").append(item.phone).append("\n");
-        sb.append("category=").append(item.category).append("\n");
-        sb.append("longitude=").append(item.longitude).append("\n");
-        sb.append("latitude=").append(item.latitude).append("\n");
-        sb.append("distance=").append(item.distance).append("\n");
-        sb.append("direction=").append(item.direction).append("\n");
-        Toast.makeText(this, sb.toString(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -331,13 +323,14 @@ public class DaumMapStoreListActivity extends FragmentActivity implements MapVie
 
     @Override
     public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
+        selectedItem = (DaumStoreItem) mapPOIItem.getUserObject();
     }
 
     @Override
     public void onMapViewInitialized(MapView mapView) {
         Log.i("DaumMap", "MapView had loaded. Now, MapView APIs could be called safely");
 
-//        mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+        mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeadingWithoutMapMoving);
     }
 
     @Override
