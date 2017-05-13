@@ -84,7 +84,7 @@ public class LockScreen2Activity extends AppCompatActivity {
                 WebkitCookieManagerProxy coreCookieManager = new WebkitCookieManagerProxy(null, CookiePolicy.ACCEPT_ALL);
                 CookieHandler.setDefault(coreCookieManager);
 
-                URL url = new URL("http://192.168.1.134:8080/WhereYou/api/rating/storeAndRatingInfo");
+                URL url = new URL("http://223.194.145.81/WhereYou/api/rating/storeAndRatingInfo");
 
                 //json 객체화
                 Gson gson = new GsonBuilder().create();

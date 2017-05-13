@@ -36,7 +36,7 @@ public class MainAppActivity extends AppCompatActivity {
     private void webViewConfig() {
         final WebView webView = (WebView) findViewById(kr.ac.hansung.maldives.android.R.id.webView);
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.loadUrl("http://223.194.145.81:80/WhereYou");
+        webView.loadUrl("http://223.194.145.81/WhereYou");
         webView.setWebViewClient(new WebViewClient() {
 
             @Override
