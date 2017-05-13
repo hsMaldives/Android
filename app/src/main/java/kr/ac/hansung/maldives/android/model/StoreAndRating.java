@@ -6,15 +6,15 @@ package kr.ac.hansung.maldives.android.model;
 
 public class StoreAndRating {
 
-    private Integer store_idx;
+    private DaumStoreItem storeInfo;
     private Float rating[];
 
-    public void setStore_idx(Integer store_idx) {
-        this.store_idx = store_idx;
+    public void setStoreInfo(DaumStoreItem storeInfo){
+        this.storeInfo = storeInfo;
     }
 
-    public Integer getStore_idx() {
-        return store_idx;
+    public DaumStoreItem getStoreInfo(){
+        return storeInfo;
     }
 
     public void setRating(Float[] rating) {

@@ -31,6 +31,7 @@ import java.util.Map;
 import javax.net.ssl.HttpsURLConnection;
 
 import kr.ac.hansung.maldives.android.adapter.RatingAdapter;
+import kr.ac.hansung.maldives.android.model.DaumStoreItem;
 import kr.ac.hansung.maldives.android.model.Locations;
 import kr.ac.hansung.maldives.android.model.StoreAndRating;
 import kr.ac.hansung.maldives.android.model.Store_Info;
@@ -44,6 +45,7 @@ public class LockScreen2Activity extends AppCompatActivity {
     private RatingAdapter ratingAdapter;
 
     private String[] names = {"맛", "친절", "청결"};
+    private DaumStoreItem storeInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +54,8 @@ public class LockScreen2Activity extends AppCompatActivity {
 
         Intent i = getIntent();
 
-        storeAndRating.setStore_idx(i.getIntExtra("store_idx", 0));
+        DaumStoreItem storeInfo = (DaumStoreItem) i.getSerializableExtra("StoerInfo");
+        storeAndRating.setStoreInfo(storeInfo);
 
         setListViewAdapter();
 
