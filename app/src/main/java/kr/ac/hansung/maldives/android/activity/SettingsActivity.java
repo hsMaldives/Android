@@ -115,7 +115,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_lockscreen);
             setHasOptionsMenu(true);
 
-            bindPreferenceSummaryToValue(findPreference("lockscreen"));
+        }
+
+        public void onSharedPreferenceChanged(Preference pref, String key) {
+
         }
 
         @Override
@@ -137,8 +140,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_notification);
             setHasOptionsMenu(true);
 
-            bindPreferenceSummaryToValue(findPreference("notification"));
-            bindPreferenceSummaryToValue(findPreference("vibrate"));
+        }
+
+        public void onSharedPreferenceChanged(Preference pref, String key) {
+
         }
 
         @Override

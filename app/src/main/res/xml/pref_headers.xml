@@ -1,15 +1,12 @@
 <preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- These settings headers are only used on tablets. -->
-
-    <header
-        android:fragment="kr.ac.hansung.maldives.android.activity.SettingsActivity$LockscreenPreferenceFragment"
-        android:icon="@drawable/ic_screen_lock_portrait_black_24dp"
-        android:title="@string/pref_header_general" />
-
-    <header
-        android:fragment="kr.ac.hansung.maldives.android.activity.SettingsActivity$NotificationPreferenceFragment"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/pref_header_notifications" />
-
+        <header
+            android:fragment="kr.ac.hansung.maldives.android.activity.SettingsActivity$LockscreenPreferenceFragment"
+            android:icon="@drawable/ic_screen_lock_portrait_black_24dp"
+            android:title="LockScreen" />
+        <header
+            android:fragment="kr.ac.hansung.maldives.android.activity.SettingsActivity$NotificationPreferenceFragment"
+            android:icon="@drawable/ic_notifications_black_24dp"
+            android:title="@string/pref_header_notifications" />
 </preference-headers>
