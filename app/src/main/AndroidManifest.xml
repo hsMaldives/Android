@@ -38,7 +38,8 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".activity.MainAppActivity"
+        <activity
+            android:name=".activity.MainAppActivity"
             android:configChanges="orientation|keyboardHidden|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -57,7 +58,7 @@
             android:enabled="true"
             android:exported="false" />
 
-        <activity android:name=".activity.LockScreenActivity"/>
+        <activity android:name=".activity.LockScreenActivity" />
 
         <receiver
             android:name=".broadcast.RestartReceiver"
@@ -98,8 +99,11 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".activity.SettingActivity" />
-        <activity android:name=".activity.DaumMapStoreListActivity"></activity>
+        <!-- <activity android:name=".activity.SettingActivity" /> -->
+        <activity android:name=".activity.DaumMapStoreListActivity" />
+        <activity
+            android:name=".activity.SettingsActivity"
+            android:label="@string/title_activity_settings"></activity>
     </application>
 
 </manifest>

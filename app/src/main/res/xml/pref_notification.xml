@@ -1,0 +1,14 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="notification"
+        android:title="Notification On/Off" />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:dependency="notifications_new_message"
+        android:key="vibrate"
+        android:title="@string/pref_title_vibrate" />
+
+</PreferenceScreen>
