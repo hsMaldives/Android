@@ -39,8 +39,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import kr.ac.hansung.maldives.android.R;
 import kr.ac.hansung.maldives.android.adapter.TextListAdapter;
@@ -63,6 +65,19 @@ public class DaumMapStoreListActivity extends FragmentActivity implements MapVie
     private Locations locations = new Locations();
 
     private DaumStoreItem selectedItem;
+
+    //data용 getlist
+    public ArrayList<DaumStoreItem> getItemList() {
+        if (textListAdapter != null) {
+            ArrayList<DaumStoreItem> allitem = new ArrayList<DaumStoreItem>();
+            for (int i = 0; i < textListAdapter.getCount(); i++) {
+                allitem.add((DaumStoreItem) textListAdapter.getItem(i));
+            }
+            return allitem;
+        } else {
+            return null;
+        }
+    }
 
     private HashMap<Integer, DaumStoreItem> mTagItemMap = new HashMap<>();
 
@@ -132,10 +147,6 @@ public class DaumMapStoreListActivity extends FragmentActivity implements MapVie
     Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             textListAdapter.notifyDataSetChanged();
-//
-//            if (notificationflag)
-//                showBasicNotification();
-//            //@@gt 예상되는 버그 -> 버튼을 누를 때마다 알림은 큐에 쌓이므로 계속해서 notification을 발생시킬 것이다. (퍼포먼스문제)
         }
     };
 
@@ -221,8 +232,11 @@ public class DaumMapStoreListActivity extends FragmentActivity implements MapVie
     }
 
     protected void findStoreList(Location location) {
-        double latitude = location.getLatitude(); // 위도
-        double longitude = location.getLongitude(); // 경도
+        Random random = new Random();
+        double latitude = 37.5 + (double)(random.nextInt(39520)+60390)/(double)1000000;//+37.5 00000
+        double longitude = 126 + (double)(random.nextInt(55649)+969835)/(double)1000000; //+126. 000000
+//        double latitude = location.getLatitude(); // 위도
+//        double longitude = location.getLongitude(); // 경도
         int radius = 50; // 중심 좌표부터의 반경거리. 특정 지역을 중심으로 검색하려고 할 경우 사용. meter 단위 (0 ~ 10000)
         int page = 1; // 페이지 번호 (1 ~ 3). 한페이지에 15개
         String apikey = DaumApiProp.DAUM_MAPS_ANDROID_APP_API_KEY;
@@ -402,6 +416,7 @@ public class DaumMapStoreListActivity extends FragmentActivity implements MapVie
     private void goToLockScreen2() {
         Intent i = new Intent(this, LockScreen2Activity.class);
 
+        i.putExtra("storeinfo", getItemList());
         i.putExtra("StoreInfo", selectedItem);
         startActivity(i);
 

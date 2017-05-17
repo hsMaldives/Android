@@ -5,9 +5,8 @@ import android.content.Intent;
 import android.os.Handler;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
-import android.widget.Toast;
 
-import kr.ac.hansung.maldives.android.activity.SettingsActivity;
+import kr.ac.hansung.maldives.android.activity.SettingActivity;
 
 public class WebViewInterface {
 
@@ -22,9 +21,7 @@ public class WebViewInterface {
 
     @JavascriptInterface
     public void callSettingsActivity() {
-        Toast.makeText(mContext, "settings in ...", Toast.LENGTH_LONG).show();
-
-        Intent intent = new Intent(mContext, SettingsActivity.class);
+        Intent intent = new Intent(mContext, SettingActivity.class);
         mContext.startActivity(intent);
     }
 }

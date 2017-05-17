@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/lockScreen"
     android:layout_width="match_parent"
@@ -20,13 +21,16 @@
 
     <Button
         android:id="@+id/nextButton"
+        android:background="#000000ff"
+        android:drawableTop="@drawable/ic_check_black_24dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_toEndOf="@+id/seekBar"
         android:layout_toRightOf="@+id/seekBar"
         android:onClick="onNextButtonClicked"
-        android:text="Next" />
+        android:text="next"
+        />
 
     <SeekBar
         android:id="@+id/seekBar"
@@ -42,13 +46,16 @@
 
     <Button
         android:id="@+id/skipButton"
+        android:background="#000000ff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:drawableTop="@drawable/ic_home_black_24dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:onClick="onSkipButtonClicked"
-        android:text="skip" />
+        android:text="home"
+         />
 
     <TextClock
         android:id="@+id/textClock"
@@ -65,7 +72,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:background="@android:color/holo_blue_dark"
         android:text="ADs"
         android:textAlignment="center" />
 

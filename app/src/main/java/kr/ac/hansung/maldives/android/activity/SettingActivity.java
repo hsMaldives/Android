@@ -25,11 +25,11 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
+        SharedPreferences lockscreenPref = getSharedPreferences("bootConfig.pref", Context.MODE_PRIVATE);
+        lockscreenflag = (Boolean) lockscreenPref.getBoolean("isBoot", false);
+
         lockScreenSwitch = (Switch) findViewById(R.id.lockScreenSwitch);
-        if (!lockscreenflag)
-            lockScreenSwitch.setChecked(false);
-        else
-            lockScreenSwitch.setChecked(true);
+        lockScreenSwitch.setChecked(lockscreenflag);
 
         lockScreenSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -42,11 +42,11 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
 
+        SharedPreferences notificationPref = getSharedPreferences("notificationConfig.pref", Context.MODE_PRIVATE);
+        notificationflag = (Boolean) notificationPref.getBoolean("notificationflag", true);
+
         notificationSwitch = (Switch) findViewById(R.id.notificationSwitch);
-        if (notificationflag)
-            notificationSwitch.setChecked(true);
-        else
-            notificationSwitch.setChecked(false);
+        notificationSwitch.setChecked(notificationflag);
 
         notificationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
