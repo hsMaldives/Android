@@ -86,7 +86,6 @@ public class DaumMapStoreListActivity extends FragmentActivity implements MapVie
 
     //매장 위치만 보내는지 저장
     private boolean locationOnlyflag = false;
-
     //알림사용여부
     private boolean notificationflag;
 
@@ -129,7 +128,7 @@ public class DaumMapStoreListActivity extends FragmentActivity implements MapVie
             }
         });
 
-        mMapView = (MapView)findViewById(R.id.map_view);
+        mMapView = (MapView) findViewById(R.id.map_view);
         mMapView.setDaumMapApiKey(DaumApiProp.DAUM_MAPS_ANDROID_APP_API_KEY);
         mMapView.setMapViewEventListener(this);
         mMapView.setPOIItemEventListener(this);
@@ -295,15 +294,6 @@ public class DaumMapStoreListActivity extends FragmentActivity implements MapVie
 
     }
 
-    //안드4.1?부터 새로운 노티피케이션 형식(일반적인 형식)
-    public void showBasicNotification() {
-        NotificationCompat.Builder mBuilder = createNotification();
-        mBuilder.setContentIntent(createPendingIntent());
-
-        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(1, mBuilder.build());
-    }
-
     private Drawable createDrawableFromUrl(String url) {
         try {
             InputStream is = (InputStream) this.fetch(url);
@@ -318,7 +308,7 @@ public class DaumMapStoreListActivity extends FragmentActivity implements MapVie
         }
     }
 
-    private Object fetch(String address) throws MalformedURLException,IOException {
+    private Object fetch(String address) throws MalformedURLException, IOException {
         URL url = new URL(address);
         Object content = url.getContent();
         return content;
@@ -400,6 +390,14 @@ public class DaumMapStoreListActivity extends FragmentActivity implements MapVie
                     .setVisibility(Notification.VISIBILITY_PUBLIC);
         }
         return builder;
+    }
+    //안드4.1?부터 새로운 노티피케이션 형식(일반적인 형식)
+    public void showBasicNotification() {
+        NotificationCompat.Builder mBuilder = createNotification();
+        mBuilder.setContentIntent(createPendingIntent());
+
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(1, mBuilder.build());
     }
 
     /**
@@ -485,8 +483,8 @@ public class DaumMapStoreListActivity extends FragmentActivity implements MapVie
                 WebkitCookieManagerProxy coreCookieManager = new WebkitCookieManagerProxy(null, CookiePolicy.ACCEPT_ALL);
                 CookieHandler.setDefault(coreCookieManager);
 
-                //URL url = new URL("http://223.194.145.81/WhereYou/api/rating/storeAndRatingInfo");
-                URL url = new URL("http://192.168.0.57:8080/WhereYou/api/rating/storeAndRatingInfo");
+                URL url = new URL("http://223.194.145.81/WhereYou/api/rating/storeAndRatingInfo");
+//                URL url = new URL("http://192.168.0.57:8080/WhereYou/api/rating/storeAndRatingInfo");
                 //json 객체화
                 Gson gson = new GsonBuilder().create();
 

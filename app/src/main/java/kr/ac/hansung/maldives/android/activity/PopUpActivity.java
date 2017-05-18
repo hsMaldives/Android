@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 public class PopUpActivity extends AppCompatActivity {
 
-    int point = 10000;
+    int point = 5;
     RelativeLayout relativeLayout;
     Animation fadeIn;
 

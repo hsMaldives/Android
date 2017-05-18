@@ -17,6 +17,7 @@ public class SettingActivity extends AppCompatActivity {
     private Switch lockScreenSwitch;
     private Switch notificationSwitch;
 
+    private boolean lockscreenflag;
     private boolean notificationflag;
 
     @Override
@@ -24,40 +25,40 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
+        SharedPreferences lockscreenPref = getSharedPreferences("bootConfig.pref", Context.MODE_PRIVATE);
+        lockscreenflag = (Boolean) lockscreenPref.getBoolean("isBoot", false);
+
         lockScreenSwitch = (Switch) findViewById(R.id.lockScreenSwitch);
-        lockScreenSwitch.setChecked(false);
+        lockScreenSwitch.setChecked(lockscreenflag);
 
         lockScreenSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked) {
+                if (isChecked) {
                     startLockScreenService();
-                }
-                else {
+                } else {
                     stopLockScreenServcie();
                 }
             }
         });
 
-        notificationSwitch = (Switch)findViewById(R.id.notificationSwitch);
-        notificationSwitch.setChecked(true);
+        SharedPreferences notificationPref = getSharedPreferences("notificationConfig.pref", Context.MODE_PRIVATE);
+        notificationflag = (Boolean) notificationPref.getBoolean("notificationflag", true);
+
+        notificationSwitch = (Switch) findViewById(R.id.notificationSwitch);
+        notificationSwitch.setChecked(notificationflag);
 
         notificationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked) {
+                if (isChecked) {
                     onNotificationSwitch();
-                }
-                else {
+                } else {
                     offNotificationSwitch();
                 }
             }
         });
     }
-
-//    public boolean isNotificationflag() {
-//        return notificationflag;
-//    }
 
     public void startLockScreenService() {
         Intent intent = new Intent(this, ScreenService.class);
@@ -82,7 +83,6 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     public void onNotificationSwitch() {
-//        notificationflag = true;
         Toast.makeText(this, "NotificationOn", Toast.LENGTH_SHORT).show();
 
         SharedPreferences sharedPref = getSharedPreferences("notificationConfig.pref", Context.MODE_PRIVATE);
@@ -92,7 +92,6 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     public void offNotificationSwitch() {
-//        notificationflag = false;
         Toast.makeText(this, "NotificationOff", Toast.LENGTH_SHORT).show();
 
         SharedPreferences sharedPref = getSharedPreferences("notificationConfig.pref", Context.MODE_PRIVATE);
