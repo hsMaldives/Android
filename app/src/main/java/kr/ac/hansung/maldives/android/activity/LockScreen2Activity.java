@@ -1,6 +1,9 @@
 package kr.ac.hansung.maldives.android.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.CookieManager;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
 
@@ -26,10 +30,11 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import kr.ac.hansung.maldives.model.DaumStoreItem;
+import kr.ac.hansung.maldives.android.R;
 import kr.ac.hansung.maldives.android.adapter.RatingAdapter;
-import kr.ac.hansung.maldives.model.StoreAndRating;
 import kr.ac.hansung.maldives.android.proxy.WebkitCookieManagerProxy;
+import kr.ac.hansung.maldives.model.DaumStoreItem;
+import kr.ac.hansung.maldives.model.StoreAndRating;
 
 public class LockScreen2Activity extends AppCompatActivity {
 
@@ -49,6 +54,17 @@ public class LockScreen2Activity extends AppCompatActivity {
         storeAndRating.setStoreInfo(storeInfo);
 
         setListViewAdapter();
+
+        ImageView imageView = (ImageView) findViewById(R.id.imageView7);
+
+        SharedPreferences sharedPref = getSharedPreferences("backgroundImg.pref", Context.MODE_PRIVATE);
+        String uri = sharedPref.getString("imgUri", null);
+
+        if (uri != null) {
+            Uri imgUri = Uri.parse(uri);
+            imageView.setImageURI(imgUri);
+        } else {
+        }
 
         //FLAG_SHOW_WHEN_LOCKED - 기본잠금보다 위에 띄워라
         //FLAG_DISSMISS_KEYGUARD - 안드로이드 기본 잠금화면을 없애라. (말을 잘 안듣는다-나중에 수정)

@@ -6,17 +6,25 @@
     android:layout_height="match_parent"
     tools:context="kr.ac.hansung.maldives.android.activity.SettingActivity">
 
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/cast_abc_scrubber_control_off_mtrl_alpha"
+        android:scaleType="fitXY" />
+
     <Switch
         android:id="@+id/lockScreenSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="LockScreen On/Off"
-        android:layout_marginTop="198dp"
+        android:layout_marginTop="64dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="97dp"
-        android:layout_marginEnd="97dp" />
+        android:layout_alignRight="@+id/backgroundChangeButton"
+        android:layout_alignEnd="@+id/backgroundChangeButton" />
 
     <Switch
         android:id="@+id/notificationSwitch"
@@ -45,5 +53,13 @@
         android:layout_toLeftOf="@+id/notificationSwitch"
         android:layout_toStartOf="@+id/notificationSwitch"
         app:srcCompat="@drawable/ic_screen_lock_portrait_black_24dp" />
+
+    <Button
+        android:id="@+id/backgroundChangeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="change background"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

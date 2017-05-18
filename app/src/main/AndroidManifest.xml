@@ -22,6 +22,9 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- gallery -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
@@ -59,7 +62,6 @@
             android:enabled="true"
             android:exported="false" />
 
-        <activity android:name=".activity.LockScreenActivity" />
 
         <receiver
             android:name=".broadcast.RestartReceiver"
@@ -91,17 +93,41 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".activity.LockScreen2Activity" />
+        <activity
+            android:name=".activity.LockScreenActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
+            android:taskAffinity=""
+
+
+            />
+
+        <activity
+            android:name=".activity.LockScreen2Activity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
+            android:taskAffinity=""
+
+            />
         <activity
             android:name=".activity.PopUpActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
+            android:taskAffinity=""
             android:theme="@style/Theme.AppCompat.Translucent" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-         <activity android:name=".activity.SettingActivity" />
-        <activity android:name=".activity.DaumMapStoreListActivity" />
+        <activity android:name=".activity.SettingActivity" />
+        <activity
+            android:name=".activity.DaumMapStoreListActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
+            android:taskAffinity=""
+
+            />
     </application>
 
 </manifest>
