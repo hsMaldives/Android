@@ -11,54 +11,55 @@
         android:id="@+id/imageView6"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/moldive"
+        android:background="@drawable/main"
         android:scaleType="fitXY"
-         />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:id="@+id/nextButton"
-        android:background="#000000ff"
-        android:drawableTop="@drawable/ic_check_black_24dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_toEndOf="@+id/seekBar"
         android:layout_toRightOf="@+id/seekBar"
+        android:background="#000000ff"
+        android:drawableTop="@drawable/ic_check_black_24dp"
         android:onClick="onNextButtonClicked"
-        android:text="next"
-        />
+        android:text="next" />
 
     <SeekBar
         android:id="@+id/seekBar"
         android:layout_width="220dp"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_above="@+id/skipButton"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="30dp"
         android:fadeScrollbars="false"
-        android:thumb="@drawable/ic_next"
-        android:max="80"
-        android:progressDrawable="@color/cast_expanded_controller_progress_text_color"/>
+        android:maxHeight="3dp"
+        android:progressDrawable="@color/cast_expanded_controller_progress_text_color"
+        android:thumb="@drawable/ic_next" />
 
     <Button
         android:id="@+id/skipButton"
-        android:background="#000000ff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableTop="@drawable/ic_home_black_24dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:background="#000000ff"
+        android:drawableTop="@drawable/ic_home_black_24dp"
         android:onClick="onSkipButtonClicked"
-        android:text="home"
-         />
+        android:text="home" />
 
     <TextClock
         android:id="@+id/textClock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="160dp"
         android:textSize="20sp"
+        tools:targetApi="jelly_bean_mr1"
+        android:layout_marginBottom="105dp"
         android:layout_above="@+id/seekBar"
         android:layout_centerHorizontal="true" />
 
@@ -75,8 +76,9 @@
         android:id="@+id/imageView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/logo2"
-        android:layout_above="@+id/textClock"
-        android:layout_centerHorizontal="true" />
+        app:srcCompat="@drawable/logo"
+        android:layout_below="@+id/textView4"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp" />
 
 </RelativeLayout>

@@ -31,7 +31,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/placeholder"
+        android:icon="@mipmap/whereyou"
         android:label="@string/app_name"
         android:largeHeap="true"
         android:supportsRtl="true"

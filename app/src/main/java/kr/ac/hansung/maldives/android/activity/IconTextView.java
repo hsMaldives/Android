@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import kr.ac.hansung.maldives.model.DaumStoreItem;
 import kr.ac.hansung.maldives.android.R;
-import kr.ac.hansung.maldives.android.model.Store_Info;
 
 /**
  * Created by jeeyoung on 2017-05-06.

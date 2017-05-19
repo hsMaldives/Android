@@ -47,6 +47,7 @@ public class LockScreenActivity extends AppCompatActivity {
             Uri imgUri = Uri.parse(uri);
             imageView.setImageURI(imgUri);
         } else {
+            imageView.setImageResource(R.drawable.moldive);
         }
 
         //customDate();

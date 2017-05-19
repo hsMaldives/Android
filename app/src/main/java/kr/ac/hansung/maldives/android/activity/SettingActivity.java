@@ -178,3 +178,4 @@ public class SettingActivity extends AppCompatActivity {
         editor.commit();
     }
 }
+

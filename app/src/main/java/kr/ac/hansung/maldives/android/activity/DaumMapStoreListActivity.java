@@ -194,12 +194,12 @@ public class DaumMapStoreListActivity extends FragmentActivity implements MapVie
         public void onLocationChanged(Location location) {
             mMapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(location.getLatitude(), location.getLongitude()), true);
 
-            Random random = new Random();
-            Location randomLocation = new Location("");
-            randomLocation.setLatitude(37.0 + (double)(random.nextInt(138630)+485168)/(double)1000000);
-            randomLocation.setLongitude(126 + (double)(random.nextInt(239000)+804849)/(double)1000000);
-            findStoreList(randomLocation);
-            //findStoreList(location);
+//            Random random = new Random();
+//            Location randomLocation = new Location("");
+//            randomLocation.setLatitude(37.0 + (double)(random.nextInt(168630)+505168)/(double)1000000);
+//            randomLocation.setLongitude(126 + (double)(random.nextInt(269000)+824849)/(double)1000000);
+//            findStoreList(randomLocation);
+            findStoreList(location);
         }
 
         public void onProviderDisabled(String provider) {
@@ -243,7 +243,7 @@ public class DaumMapStoreListActivity extends FragmentActivity implements MapVie
     protected void findStoreList(Location location) {
         double latitude = location.getLatitude(); // 위도
         double longitude = location.getLongitude(); // 경도
-        int radius = 10000; // 중심 좌표부터의 반경거리. 특정 지역을 중심으로 검색하려고 할 경우 사용. meter 단위 (0 ~ 10000)
+        int radius = 100; // 중심 좌표부터의 반경거리. 특정 지역을 중심으로 검색하려고 할 경우 사용. meter 단위 (0 ~ 10000)
         int page = 1; // 페이지 번호 (1 ~ 3). 한페이지에 15개
         String apikey = DaumApiProp.DAUM_MAPS_ANDROID_APP_API_KEY;
 
@@ -277,9 +277,9 @@ public class DaumMapStoreListActivity extends FragmentActivity implements MapVie
             poiItem.setMapPoint(mapPoint);
             mapPointBounds.add(mapPoint);
             poiItem.setMarkerType(MapPOIItem.MarkerType.CustomImage);
-            poiItem.setCustomImageResourceId(R.drawable.map_pin_blue);
+            poiItem.setCustomImageResourceId(R.drawable.pin_blue2);
             poiItem.setSelectedMarkerType(MapPOIItem.MarkerType.CustomImage);
-            poiItem.setCustomSelectedImageResourceId(R.drawable.map_pin_red);
+            poiItem.setCustomSelectedImageResourceId(R.drawable.pin_red2);
             poiItem.setCustomImageAutoscale(false);
             poiItem.setCustomImageAnchor(0.5f, 1.0f);
             poiItem.setUserObject(item);
@@ -374,13 +374,13 @@ public class DaumMapStoreListActivity extends FragmentActivity implements MapVie
 
 
     private NotificationCompat.Builder createNotification() {
-        Bitmap icon = BitmapFactory.decodeResource(getResources(), R.mipmap.placeholder);
+        Bitmap icon = BitmapFactory.decodeResource(getResources(), R.mipmap.whereyou);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.placeholder)
+                .setSmallIcon(R.mipmap.whereyou)
                 .setLargeIcon(icon)
                 .setContentTitle("미평가된 장소가 있네요?")
                 .setContentText("평가할수록 정확도는 향상됩니다!!!")
-                .setSmallIcon(R.mipmap.placeholder)
+                .setSmallIcon(R.mipmap.whereyou)
                 .setAutoCancel(true)
                 .setWhen(System.currentTimeMillis())
                 .setDefaults(Notification.DEFAULT_ALL);
@@ -484,7 +484,7 @@ public class DaumMapStoreListActivity extends FragmentActivity implements MapVie
                 CookieHandler.setDefault(coreCookieManager);
 
                 URL url = new URL("http://223.194.145.81/WhereYou/api/rating/storeAndRatingInfo");
-//                URL url = new URL("http://192.168.0.57:8080/WhereYou/api/rating/storeAndRatingInfo");
+//                URL url = new URL("http://192.168.0.170:8080/WhereYou/api/rating/storeAndRatingInfo");
                 //json 객체화
                 Gson gson = new GsonBuilder().create();
 

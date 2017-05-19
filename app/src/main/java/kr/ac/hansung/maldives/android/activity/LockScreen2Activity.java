@@ -46,7 +46,7 @@ public class LockScreen2Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(kr.ac.hansung.maldives.android.R.layout.lockscreen2);
+        setContentView(R.layout.lockscreen2);
 
         Intent i = getIntent();
 
@@ -178,3 +178,4 @@ public class LockScreen2Activity extends AppCompatActivity {
         finish();
     }
 }
+
