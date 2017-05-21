@@ -63,15 +63,6 @@
         android:layout_above="@+id/seekBar"
         android:layout_centerHorizontal="true" />
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:text="ADs"
-        android:textAlignment="center" />
-
     <ImageView
         android:id="@+id/imageView5"
         android:layout_width="wrap_content"

@@ -483,7 +483,7 @@ public class DaumMapStoreListActivity extends FragmentActivity implements MapVie
                 WebkitCookieManagerProxy coreCookieManager = new WebkitCookieManagerProxy(null, CookiePolicy.ACCEPT_ALL);
                 CookieHandler.setDefault(coreCookieManager);
 
-                URL url = new URL("http://223.194.145.81/WhereYou/api/rating/storeAndRatingInfo");
+                URL url = new URL("http://whereyou.kr/api/rating/storeAndRatingInfo");
 //                URL url = new URL("http://192.168.0.170:8080/WhereYou/api/rating/storeAndRatingInfo");
                 //json 객체화
                 Gson gson = new GsonBuilder().create();

@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -18,6 +19,8 @@ import kr.ac.hansung.maldives.android.R;
 import kr.ac.hansung.maldives.android.webinterface.WebViewInterface;
 
 public class MainAppActivity extends AppCompatActivity {
+
+    private WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +37,9 @@ public class MainAppActivity extends AppCompatActivity {
     }
 
     private void webViewConfig() {
-        final WebView webView = (WebView) findViewById(kr.ac.hansung.maldives.android.R.id.webView);
+        webView = (WebView) findViewById(R.id.webView);
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.loadUrl("http://223.194.145.81/WhereYou");
+        webView.loadUrl("http://whereyou.kr");
 //        webView.loadUrl("http://192.168.0.170:8080/WhereYou");
         webView.setWebViewClient(new WebViewClient() {
 
@@ -57,6 +60,18 @@ public class MainAppActivity extends AppCompatActivity {
         });
         webView.setWebChromeClient(new WebChromeClient() {});
         webView.addJavascriptInterface(new WebViewInterface(this, webView), "whereYou");
+    }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if((
+                keyCode == KeyEvent.KEYCODE_BACK) && webView.canGoBack()){
+            webView.goBack();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     //위치 사용 권한 설정

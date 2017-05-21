@@ -64,6 +64,7 @@ public class LockScreen2Activity extends AppCompatActivity {
             Uri imgUri = Uri.parse(uri);
             imageView.setImageURI(imgUri);
         } else {
+            imageView.setImageResource(R.drawable.main);
         }
 
         //FLAG_SHOW_WHEN_LOCKED - 기본잠금보다 위에 띄워라
@@ -100,7 +101,7 @@ public class LockScreen2Activity extends AppCompatActivity {
                 WebkitCookieManagerProxy coreCookieManager = new WebkitCookieManagerProxy(null, CookiePolicy.ACCEPT_ALL);
                 CookieHandler.setDefault(coreCookieManager);
 
-                URL url = new URL("http://223.194.145.81/WhereYou/api/rating/storeAndRatingInfo");
+                URL url = new URL("http://whereyou.kr/api/rating/storeAndRatingInfo");
 
                 //json 객체화
                 Gson gson = new GsonBuilder().create();

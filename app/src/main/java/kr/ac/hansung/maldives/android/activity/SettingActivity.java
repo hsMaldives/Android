@@ -79,8 +79,20 @@ public class SettingActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, REQ_CAMERA_SELECT);
+
+
             }
         });
+
+        SharedPreferences sharedPref = getSharedPreferences("backgroundImg.pref", Context.MODE_PRIVATE);
+        String uri = sharedPref.getString("imgUri", null);
+        imageView = (ImageView) findViewById(R.id.imageView4);
+
+        if (uri != null) {
+            Uri imgUri = Uri.parse(uri);
+            imageView.setImageURI(imgUri);
+        } else {
+        }
     }
 
 
@@ -88,38 +100,28 @@ public class SettingActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 100) {
-
-        }
-
-        if (resultCode == Activity.RESULT_OK) {
-            try {
-
-                Log.d("REAL path is : ", getImagePath(data.getData()));
-                //Bitmap image_bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
-                imageView = (ImageView) findViewById(R.id.imageView4);
-                //imageView.setImageBitmap(image_bitmap);
-
-                SharedPreferences sharedPref = getSharedPreferences("backgroundImg.pref", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString("imgUri", data.getData().toString());
-                editor.commit();
+        if (requestCode == REQ_CAMERA_SELECT) {
 
 
+            if (resultCode == Activity.RESULT_OK) {
+                try {
 
-                sharedPref = getSharedPreferences("backgroundImg.pref", Context.MODE_PRIVATE);
-                String uri = sharedPref.getString("imgUri", null);
+                    Log.d("REAL path is : ", getImagePath(data.getData()));
+                    //Bitmap image_bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
+
+                    //imageView.setImageBitmap(image_bitmap);
 
 
-                if (uri != null) {
-                    Uri imgUri = Uri.parse(uri);
-                    imageView.setImageURI(imgUri);
-                } else {
+                    SharedPreferences sharedPref = getSharedPreferences("backgroundImg.pref", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString("imgUri", data.getData().toString());
+                    editor.commit();
+                    imageView.setImageURI(data.getData());
+
+                } catch (Exception e) {
+                    Toast.makeText(getBaseContext(), "사진불러오기실패", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
                 }
-
-            } catch (Exception e) {
-                Toast.makeText(getBaseContext(), "사진불러오기실패", Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
             }
         }
     }
