@@ -40,7 +40,7 @@ public class MainAppActivity extends AppCompatActivity {
         webView = (WebView) findViewById(R.id.webView);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl("http://whereyou.kr");
-//        webView.loadUrl("http://192.168.0.170:8080/WhereYou");
+//        webView.loadUrl("http://192.168.219.104:8080/WhereYou");
         webView.setWebViewClient(new WebViewClient() {
 
             @Override

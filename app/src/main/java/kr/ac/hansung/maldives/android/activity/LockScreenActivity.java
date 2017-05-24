@@ -40,12 +40,14 @@ public class LockScreenActivity extends AppCompatActivity {
         ImageView imageView = (ImageView) findViewById(R.id.imageView6);
 
         SharedPreferences sharedPref = getSharedPreferences("backgroundImg.pref", Context.MODE_PRIVATE);
-        String uri = sharedPref.getString("imgUri", null);
+        if (sharedPref.contains("imgUri")) {
+            String uri = sharedPref.getString("imgUri", null);
 
 
-        if (uri != null) {
-            Uri imgUri = Uri.parse(uri);
-            imageView.setImageURI(imgUri);
+            if (uri != null) {
+                Uri imgUri = Uri.parse(uri);
+                imageView.setImageURI(imgUri);
+            }
         } else {
             imageView.setImageResource(R.drawable.main);
         }

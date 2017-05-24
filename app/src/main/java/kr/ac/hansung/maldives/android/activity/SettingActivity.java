@@ -2,6 +2,7 @@ package kr.ac.hansung.maldives.android.activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -37,6 +38,8 @@ public class SettingActivity extends AppCompatActivity {
 
     private boolean lockscreenflag;
     private boolean notificationflag;
+
+    final Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,13 +83,42 @@ public class SettingActivity extends AppCompatActivity {
         });
 
         button = (Button) findViewById(R.id.backgroundChangeButton);
+
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, REQ_CAMERA_SELECT);
 
+//                onClickView(view);
 
+                final Dialog dialog = new Dialog(context);
+                dialog.setContentView(R.layout.galarysettingdialog);
+
+                Button defaultSettingButton = (Button) dialog.findViewById(R.id.defaultsetting);
+                Button galarySettingButton = (Button) dialog.findViewById(R.id.galarysetting);
+
+                defaultSettingButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        SharedPreferences sharedPref = getSharedPreferences("backgroundImg.pref", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putString("imgUri", null);
+                        editor.commit();
+                        imageView.setImageResource(R.drawable.main);
+                        dialog.dismiss();
+                    }
+                });
+
+                galarySettingButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(intent, REQ_CAMERA_SELECT);
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
             }
         });
 
@@ -98,51 +130,8 @@ public class SettingActivity extends AppCompatActivity {
             Uri imgUri = Uri.parse(uri);
             imageView.setImageURI(imgUri);
         } else {
+            imageView.setImageResource(R.drawable.main);
         }
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == REQ_CAMERA_SELECT) {
-
-
-            if (resultCode == Activity.RESULT_OK) {
-                try {
-
-                    Log.d("REAL path is : ", getImagePath(data.getData()));
-                    //Bitmap image_bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
-
-                    //imageView.setImageBitmap(image_bitmap);
-
-
-                    SharedPreferences sharedPref = getSharedPreferences("backgroundImg.pref", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putString("imgUri", data.getData().toString());
-                    editor.commit();
-                    imageView.setImageURI(data.getData());
-
-                } catch (Exception e) {
-                    Toast.makeText(getBaseContext(), "사진불러오기실패", Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    private String getImagePath(Uri data) {
-        String[] proj = {MediaStore.Images.Media.DATA};
-        CursorLoader loader = new CursorLoader(this, data, proj, null, null, null);
-        Cursor cursor = loader.loadInBackground();
-        int column_idx = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        String result = cursor.getString(column_idx);
-        cursor.close();
-
-
-        return result;
 
     }
 
@@ -186,7 +175,6 @@ public class SettingActivity extends AppCompatActivity {
         editor.commit();
     }
 
-
     //갤러리 접근 권한 설정
     public void checkDangerousPermissions() {
         String[] permissions = {
@@ -201,18 +189,55 @@ public class SettingActivity extends AppCompatActivity {
             }
         }
 
-//        if(permissionCheck == PackageManager.PERMISSION_GRANTED) {
-//          Toast.makeText(this, "권한 있음", Toast.LENGTH_LONG).show();
-//        } else {
-//            Toast.makeText(this, "권한 없음", Toast.LENGTH_LONG).show();
-
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[0])) {
-//                Toast.makeText(this, "권한 설명 필요함", Toast.LENGTH_LONG).show();
         } else {
             ActivityCompat.requestPermissions(this, permissions, 1);
         }
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQ_CAMERA_SELECT) {
+
+
+            if (resultCode == Activity.RESULT_OK) {
+                try {
+
+                    Log.d("REAL path is : ", getImagePath(data.getData()));
+                    //Bitmap image_bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
+
+                    //imageView.setImageBitmap(image_bitmap);
+
+                    SharedPreferences sharedPref = getSharedPreferences("backgroundImg.pref", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString("imgUri", data.getData().toString());
+                    editor.commit();
+                    imageView.setImageURI(data.getData());
+
+                } catch (Exception e) {
+                    Toast.makeText(getBaseContext(), "사진불러오기실패", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private String getImagePath(Uri data) {
+        String[] proj = {MediaStore.Images.Media.DATA};
+        CursorLoader loader = new CursorLoader(this, data, proj, null, null, null);
+        Cursor cursor = loader.loadInBackground();
+        int column_idx = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String result = cursor.getString(column_idx);
+        cursor.close();
+
+
+        return result;
+
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -226,5 +251,6 @@ public class SettingActivity extends AppCompatActivity {
             }
         }
     }
+
 }
 
