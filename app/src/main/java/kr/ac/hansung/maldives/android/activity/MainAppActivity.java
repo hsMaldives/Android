@@ -9,8 +9,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.KeyEvent;
+import android.webkit.GeolocationPermissions;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -52,13 +52,21 @@ public class MainAppActivity extends AppCompatActivity {
                 builder.setMessage("네트워크 상태가 원활하지 않습니다. 페이지를 이동합니다.");
                 builder.setNeutralButton("확인", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                                goToSetting();
+                        goToSetting();
                     }
                 });
                 builder.show();
             }
         });
-        webView.setWebChromeClient(new WebChromeClient() {});
+        webView.setWebChromeClient(new WebChromeClient() {
+
+            public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
+                // Should implement this function.
+                final String myOrigin = origin;
+                final GeolocationPermissions.Callback myCallback = callback;
+                myCallback.invoke(myOrigin, true, false);
+            }
+        });
         webView.addJavascriptInterface(new WebViewInterface(this, webView), "whereYou");
     }
 
@@ -66,8 +74,8 @@ public class MainAppActivity extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-        if((
-                keyCode == KeyEvent.KEYCODE_BACK) && webView.canGoBack()){
+        if ((
+                keyCode == KeyEvent.KEYCODE_BACK) && webView.canGoBack()) {
             webView.goBack();
             return true;
         }
@@ -119,8 +127,6 @@ public class MainAppActivity extends AppCompatActivity {
     public boolean chkGpsService() {
 
         String gps = android.provider.Settings.Secure.getString(getContentResolver(), android.provider.Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-
-        Log.d(gps, "aaaa");
 
         if (!(gps.matches(".*gps.*") && gps.matches(".*network.*"))) {
 

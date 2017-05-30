@@ -104,7 +104,7 @@ public class SettingActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString("imgUri", null);
                         editor.commit();
-                        imageView.setImageResource(R.drawable.main);
+                        imageView.setImageResource(R.drawable.moldive);
                         dialog.dismiss();
                     }
                 });
@@ -130,7 +130,7 @@ public class SettingActivity extends AppCompatActivity {
             Uri imgUri = Uri.parse(uri);
             imageView.setImageURI(imgUri);
         } else {
-            imageView.setImageResource(R.drawable.main);
+            imageView.setImageResource(R.drawable.moldive);
         }
 
     }

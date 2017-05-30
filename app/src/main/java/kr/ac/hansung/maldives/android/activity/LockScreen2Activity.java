@@ -64,7 +64,7 @@ public class LockScreen2Activity extends AppCompatActivity {
             Uri imgUri = Uri.parse(uri);
             imageView.setImageURI(imgUri);
         } else {
-            imageView.setImageResource(R.drawable.main);
+            imageView.setImageResource(R.drawable.moldive);
         }
 
         //FLAG_SHOW_WHEN_LOCKED - 기본잠금보다 위에 띄워라
