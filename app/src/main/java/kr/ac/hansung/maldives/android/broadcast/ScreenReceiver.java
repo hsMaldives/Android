@@ -26,9 +26,6 @@ public class ScreenReceiver extends BroadcastReceiver {
             if(km == null)
                 km = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
 
-//            if(keyLock == null)
-//                keyLock = km.newKeyguardLock(Context.KEYGUARD_SERVICE);
-
             if(telephonyManager == null){
                 telephonyManager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
                 telephonyManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);

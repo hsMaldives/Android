@@ -5,11 +5,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-
-import kr.ac.hansung.maldives.model.DaumStoreItem;
 import kr.ac.hansung.maldives.android.activity.IconTextView;
 import kr.ac.hansung.maldives.android.model.List_Store;
-import kr.ac.hansung.maldives.android.model.Store_Info;
+import kr.ac.hansung.maldives.model.DaumStoreItem;
 
 /**
  * Created by jeeyoung on 2017-05-05.
@@ -40,18 +38,6 @@ public class TextListAdapter extends BaseAdapter {
     public Object getItem(int position) {
         return list_store.getList_Store().get(position);
     }
-
-    public boolean areAllItemSelectable() {
-        return false;
-    }
-
-//    public boolean isSelectable(int position) {
-//        try {
-//            return list_store.getList_Store().get(position).isSelectable();
-//        } catch (IndexOutOfBoundsException ex) {
-//            return false;
-//        }
-//    }
 
     public long getItemId(int position) {
         return position;

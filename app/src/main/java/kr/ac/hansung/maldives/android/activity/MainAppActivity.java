@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.webkit.GeolocationPermissions;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -39,7 +40,13 @@ public class MainAppActivity extends AppCompatActivity {
     private void webViewConfig() {
         webView = (WebView) findViewById(R.id.webView);
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.loadUrl("http://whereyou.kr");
+        WebSettings set = webView.getSettings();
+
+        set.setSupportZoom(true);
+
+        set.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+
+        webView.loadUrl("https://whereyou.kr");
 //        webView.loadUrl("http://192.168.219.104:8080/WhereYou");
         webView.setWebViewClient(new WebViewClient() {
 

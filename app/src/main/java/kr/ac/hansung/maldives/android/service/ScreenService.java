@@ -62,14 +62,6 @@ public class ScreenService extends Service {
             }
         }
 
-
-        //NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-       // Notification notification = new Notification(R.drawable.circle, "서비스 실행됨", System.currentTimeMillis());
-        //notification.setLatestEventInfo(getApplicationContext(), "Screen Service", "Foreground로 실행됨", null);
-
-        //.......Notification Customzing?
-        //..as.df
-        //.asd.f.afsd
         startForeground(0, new Notification());
 
 

@@ -38,8 +38,7 @@
         android:layout_marginBottom="30dp"
         android:fadeScrollbars="false"
         android:maxHeight="3dp"
-        android:progressDrawable="@color/cast_expanded_controller_progress_text_color"
-        android:thumb="@drawable/ic_next" />
+        android:progressDrawable="@color/cast_expanded_controller_progress_text_color" />
 
     <Button
         android:id="@+id/skipButton"
@@ -51,7 +50,8 @@
         android:background="#000000ff"
         android:drawableTop="@drawable/ic_home_black_24dp"
         android:onClick="onSkipButtonClicked"
-        android:text="home" />
+        android:text="home"
+        android:thumb="@drawable/ic_next" />
 
     <TextClock
         android:id="@+id/textClock"

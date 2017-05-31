@@ -54,7 +54,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -194,11 +193,6 @@ public class DaumMapStoreListActivity extends FragmentActivity implements MapVie
         public void onLocationChanged(Location location) {
             mMapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(location.getLatitude(), location.getLongitude()), true);
 
-//            Random random = new Random();
-//            Location randomLocation = new Location("");
-//            randomLocation.setLatitude(37.0 + (double)(random.nextInt(168630)+505168)/(double)1000000);
-//            randomLocation.setLongitude(126 + (double)(random.nextInt(269000)+824849)/(double)1000000);
-//            findStoreList(randomLocation);
             findStoreList(location);
         }
 
@@ -365,7 +359,6 @@ public class DaumMapStoreListActivity extends FragmentActivity implements MapVie
 
     @Override
     public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint) {
-//        findStoreList();
     }
 
     @Override
@@ -391,6 +384,7 @@ public class DaumMapStoreListActivity extends FragmentActivity implements MapVie
         }
         return builder;
     }
+
     //안드4.1?부터 새로운 노티피케이션 형식(일반적인 형식)
     public void showBasicNotification() {
         NotificationCompat.Builder mBuilder = createNotification();
@@ -437,33 +431,20 @@ public class DaumMapStoreListActivity extends FragmentActivity implements MapVie
             return;
         }
         if (locationOnlyflag == true) {
-            handler = new Handler() {
-                public void handleMessage(Message msg) {
-                    textListAdapter.notifyDataSetChanged();
 
+            Handler handler1 = new Handler() {
+                public void handleMessage(Message msg) {
                     if (notificationflag)
                         showBasicNotification();
-                    //@@gt 예상되는 버그 -> 버튼을 누를 때마다 알림은 큐에 쌓이므로 계속해서 notification을 발생시킬 것이다. (퍼포먼스문제)
                 }
             };
-            handler.sendEmptyMessageDelayed(0, 5000);
+            //@@gt 예상되는 버그 -> 버튼을 누를 때마다 알림은 큐에 쌓이므로 계속해서 notification을 발생시킬 것이다. (퍼포먼스문제)
+            handler1.sendEmptyMessageDelayed(0, 5000);
+
             finish();
+            handler1.removeMessages(6000);
         } else {
             goToLockScreen2();
-        }
-    }
-
-
-    public void onTempButtonClicked(View v){
-        Random random = new Random();
-
-        for(int i=0;i<textListAdapter.getCount();i++) {
-            StoreAndRating storeAndRating= new StoreAndRating();
-
-            storeAndRating.setStoreInfo((DaumStoreItem)textListAdapter.getItem(i));
-            storeAndRating.setRating(new Float[]{random.nextInt(11)/(float)2,random.nextInt(11)/(float)2,random.nextInt(11)/(float)2,random.nextInt(11)/(float)2,random.nextInt(11)/(float)2});
-
-            new SendPost(storeAndRating).execute();
         }
     }
 
@@ -471,9 +452,10 @@ public class DaumMapStoreListActivity extends FragmentActivity implements MapVie
 
         private StoreAndRating storeAndRating;
 
-        public SendPost(StoreAndRating storeAndRating){
+        public SendPost(StoreAndRating storeAndRating) {
             this.storeAndRating = storeAndRating;
         }
+
         protected void onPreExecute() {
         }
 
@@ -483,7 +465,7 @@ public class DaumMapStoreListActivity extends FragmentActivity implements MapVie
                 WebkitCookieManagerProxy coreCookieManager = new WebkitCookieManagerProxy(null, CookiePolicy.ACCEPT_ALL);
                 CookieHandler.setDefault(coreCookieManager);
 
-                URL url = new URL("http://whereyou.kr/api/rating/storeAndRatingInfo");
+                URL url = new URL("https://whereyou.kr/api/rating/storeAndRatingInfo");
 //                URL url = new URL("http://192.168.219.104:8080/WhereYou/api/rating/storeAndRatingInfo");
                 //json 객체화
                 Gson gson = new GsonBuilder().create();

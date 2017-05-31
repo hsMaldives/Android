@@ -17,6 +17,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.webkit.CookieManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -31,8 +32,10 @@ public class SettingActivity extends AppCompatActivity {
     private Switch lockScreenSwitch;
     private Switch notificationSwitch;
     private Button button;
+    private Button deleteCookie;
 
     private ImageView imageView;
+
 
     private final int REQ_CAMERA_SELECT = 100;  // 아무값이나 무방.
 
@@ -133,6 +136,8 @@ public class SettingActivity extends AppCompatActivity {
             imageView.setImageResource(R.drawable.moldive);
         }
 
+        deleteCookie = (Button) findViewById(R.id.deleteCookie);
+
     }
 
     public void startLockScreenService() {
@@ -175,6 +180,12 @@ public class SettingActivity extends AppCompatActivity {
         editor.commit();
     }
 
+    public void deleteCookie() {
+        CookieManager cm = CookieManager.getInstance();
+        cm.setAcceptCookie(true);
+        cm.removeSessionCookies(null);
+    }
+
     //갤러리 접근 권한 설정
     public void checkDangerousPermissions() {
         String[] permissions = {
@@ -207,9 +218,6 @@ public class SettingActivity extends AppCompatActivity {
                 try {
 
                     Log.d("REAL path is : ", getImagePath(data.getData()));
-                    //Bitmap image_bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
-
-                    //imageView.setImageBitmap(image_bitmap);
 
                     SharedPreferences sharedPref = getSharedPreferences("backgroundImg.pref", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPref.edit();

@@ -63,4 +63,16 @@
         android:background="#000000ff"
         android:text="change background" />
 
+    <Button
+        android:id="@+id/deleteCookie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/notificationSwitch"
+        android:layout_alignStart="@+id/imageView2"
+        android:layout_below="@+id/notificationSwitch"
+        android:background="#000000ff"
+        android:layout_marginTop="48dp"
+        android:onClick="deleteCookie"
+        android:text="Cookie 삭제하기" />
+
 </RelativeLayout>

@@ -101,7 +101,7 @@ public class LockScreen2Activity extends AppCompatActivity {
                 WebkitCookieManagerProxy coreCookieManager = new WebkitCookieManagerProxy(null, CookiePolicy.ACCEPT_ALL);
                 CookieHandler.setDefault(coreCookieManager);
 
-                URL url = new URL("http://whereyou.kr/api/rating/storeAndRatingInfo");
+                URL url = new URL("https://whereyou.kr/api/rating/storeAndRatingInfo");
 
                 //json 객체화
                 Gson gson = new GsonBuilder().create();
@@ -110,8 +110,8 @@ public class LockScreen2Activity extends AppCompatActivity {
 
                 //Http 연결 설정
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setReadTimeout(15000);
-                conn.setConnectTimeout(15000);
+                conn.setReadTimeout(150000);
+                conn.setConnectTimeout(150000);
                 conn.setRequestMethod("POST");
                 conn.setDoInput(true);
                 conn.setDoOutput(true);
