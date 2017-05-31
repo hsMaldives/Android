@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.webkit.CookieManager;
+import android.webkit.ValueCallback;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -180,10 +181,14 @@ public class SettingActivity extends AppCompatActivity {
         editor.commit();
     }
 
-    public void deleteCookie() {
-        CookieManager cm = CookieManager.getInstance();
-        cm.setAcceptCookie(true);
-        cm.removeSessionCookies(null);
+    public void deleteCookie(View v) {
+        CookieManager cookieManager = CookieManager.getInstance();
+        cookieManager.removeSessionCookies(new ValueCallback<Boolean>() {
+            @Override
+            public void onReceiveValue(Boolean value) {
+            }
+        });
+        Toast.makeText(this, "Cookie가 삭제되었습니다.", Toast.LENGTH_LONG).show();
     }
 
     //갤러리 접근 권한 설정

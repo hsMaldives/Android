@@ -39,6 +39,10 @@ public class TextListAdapter extends BaseAdapter {
         return list_store.getList_Store().get(position);
     }
 
+    public boolean areAllItemSelectable() {
+        return false;
+    }
+
     public long getItemId(int position) {
         return position;
     }
